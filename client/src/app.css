@@ -1,0 +1,9 @@
+#root {
+    height: 100%;
+}
+
+#app {
+    height: 100%;
+    background-color: #005b85;
+    padding: 1rem;
+}
