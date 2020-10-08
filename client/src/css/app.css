@@ -1,0 +1,24 @@
+#root {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "content"
+        "footer";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+}
+
+#main-header {
+    grid-area: header;
+}
+
+#main-content {
+    grid-area: content;
+    background-color: darkorchid;
+    padding: 1rem;
+}
+
+#main-footer {
+    grid-area: footer;
+}
