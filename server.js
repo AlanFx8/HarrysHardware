@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 
+const productsRoute = require('./routes/api/products.js');
+
 //App
 const app = express();
 
@@ -8,7 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-//SET DEFAULT PATH TO BUILD
+//Set Routes
+app.use('/api/products', productsRoute);
+
+//Set default to build
 if (process.env.NODE_ENV === 'production'){
     app.use(express.static('client/build'));
     app.get('*', (req, res) => {

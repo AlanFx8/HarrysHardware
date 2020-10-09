@@ -1,5 +1,5 @@
 //This represents the MongoDatabase
-export default products = [
+module.exports = [
     {
         id: 1,
         name: 'Black and Decker 20 volt 3/8 in. Brushed Cordless Compact Drill Kit (Battery & Charger Included)',
