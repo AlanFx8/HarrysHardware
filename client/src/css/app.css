@@ -15,8 +15,7 @@
 
 #main-content {
     grid-area: content;
-    background-color: darkorchid;
-    padding: 1rem;
+    background-color: #dddddd;
 }
 
 #main-footer {
