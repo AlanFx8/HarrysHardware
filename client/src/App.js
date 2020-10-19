@@ -6,6 +6,7 @@ import Products from './components/Products';
 import ProductsType from './components/ProductsType';
 import ProductInfo from './components/ProductInfo';
 import Footer from './components/Footer';
+import ScrollButton from './components/ScrollButton';
 import Error from './components/Error';
 import './css/reset.css';
 import './css/app.css';
@@ -25,6 +26,7 @@ function App() {
         </Switch>
       </div>
       <Footer />
+      <ScrollButton />
     </Router>
   );
 }

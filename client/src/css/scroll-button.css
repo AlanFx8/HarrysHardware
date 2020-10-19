@@ -1,0 +1,36 @@
+#scroll-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 48px;
+    height: 48px;
+    background: #777777;
+    border: solid 1px #000;
+    border-radius: 40%;
+    
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    
+    opacity: 0;
+    transition-property: background-color, opacity;
+    transition-duration: .5s;
+}
+
+#scroll-button.active {
+    opacity: 1;
+}
+
+#scroll-button.active:hover {
+    background: #bbbbbb;
+    cursor: pointer;
+}
+
+#scroll-button > div {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #000000;
+}
