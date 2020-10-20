@@ -11,7 +11,6 @@ import Error from './components/Error';
 import './css/reset.css';
 import './css/app.css';
 
-//The App class
 function App() {
   return (
     <Router>
