@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './../../css/products-menu.css';
 
-export default class ProjectsMenu extends React.Component {
+//The ProductPagwMenu class
+//It is used by the Products and ProductsType page to list the sub-menu, and sort options
+export default class ProductPageMenu extends React.Component {
     render(){
         return(
             <div className="products-menu" >

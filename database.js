@@ -1,7 +1,7 @@
 //This represents the MongoDatabase
 module.exports = [
     {
-        id: 1,
+        id: 101,
         name: 'Black and Decker 20 volt 3/8 in. Brushed Cordless Compact Drill Kit (Battery & Charger Included)',
         product_type: 'powerdrills',
         brand: 'Black and Decker',
@@ -9,11 +9,12 @@ module.exports = [
         price: 49.99,
         review_count: 35,
         rating: 3.5,
+        hidden_by_filter: false,
         sub_type: 'cordless-drills',
         battery_type: 'Lithium Ion'
     },
     {
-        id: 2,
+        id: 102,
         name: 'Craftsman 20V MAX 20 volt 1/2 in. Brushed Cordless Drill Kit (Battery & Charger Included)',
         product_type: 'powerdrills',
         brand: 'Craftsman',
@@ -21,11 +22,12 @@ module.exports = [
         price: 79.99,
         review_count: 64,
         rating: 4.6,
+        hidden_by_filter: false,
         sub_type: 'cordless-drills',
         battery_type: 'Lithium Ion'
     },
     {
-        id: 3,
+        id: 103,
         name: '20-Volt Compact Cordless Drill Kit, 3/8-In., Lithium-Ion Battery',
         product_type: 'powerdrills',
         brand: 'Master Mechanic',
@@ -34,11 +36,12 @@ module.exports = [
         discount_price: 50.00,
         review_count: 20,
         rating: 3,
+        hidden_by_filter: false,
         sub_type: 'cordless-drills',
         battery_type: 'Lithium Ion'
     },
     {
-        id: 4,
+        id: 104,
         name: 'Kobalt XTR 24-Volt Max 1/2-in Brushless Cordless Drill (Charger Included and 1-Battery Included)',
         product_type: 'powerdrills',
         brand: 'Kobalt',
@@ -46,11 +49,12 @@ module.exports = [
         price: 169.00,
         review_count: 30,
         rating: 5,
+        hidden_by_filter: false,
         sub_type: 'cordless-drills',
         battery_type: 'Other'
     },
     {
-        id: 5,
+        id: 105,
         name: 'Rockwell ShopSeries 18 volt 3/8 in. Brushless Cordless Drill Kit (Battery & Charger Included) ',
         product_type: 'powerdrills',
         brand: 'Rockwell',
@@ -58,11 +62,12 @@ module.exports = [
         price: 64.99,
         review_count: 0,
         rating: 0,
+        hidden_by_filter: false,
         sub_type: 'cordless-drills',
         battery_type: 'Ni-Cad'
     }, //LAWN MOWERS
     {
-        id: 11,
+        id: 201,
         name: "EGO LM2102SP 21 in. 56 volt Battery Self-Propelled Lawn Mower",
         product_type: "lawnmowers",
         brand: "EGO",
@@ -70,11 +75,12 @@ module.exports = [
         price: 569.99,
         review_count: 50,
         rating: 4.5,
+        hidden_by_filter: false,
         sub_type: "pushmowers",
         powered_by: "battery"
     },
     {
-        id: 12,
+        id: 202,
         name: "Craftsman 12AVB2R3791 163 cc Gas Self-Propelled Lawn Mower",
         product_type: "lawnmowers",
         brand: "Craftsman",
@@ -82,11 +88,12 @@ module.exports = [
         price: 339.99,
         review_count: 42,
         rating: 3,
+        hidden_by_filter: false,
         sub_type: "pushmowers",
         powered_by: "gas"
     },
     {
-        id: 13,
+        id: 203,
         name: "Toro Power Reverse Personal Pace 22 in. 159 cc Gas Self-Propelled Lawn Mower Kit",
         product_type: "lawnmowers",
         brand: "Toro",
@@ -94,11 +101,12 @@ module.exports = [
         price: 459.00,
         review_count: 4,
         rating: 4.8,
+        hidden_by_filter: false,
         sub_type: "pushmowers",
         powered_by: "gas"
     },
     {
-        id: 14,
+        id: 204,
         name: "Craftsman 30 in. 382 cc Gear Gas Lawn Tractor",
         product_type: "lawnmowers",
         brand: "Craftsman",
@@ -106,6 +114,7 @@ module.exports = [
         price: 1249.99,
         review_count: 4,
         rating: 4.8,
+        hidden_by_filter: false,
         sub_type: "ridingmowers",
         powered_by: "gas"
     }

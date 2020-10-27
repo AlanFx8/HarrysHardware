@@ -1,3 +1,38 @@
+/*Products Menu*/
+.products-menu {
+    margin-top: 1rem;
+}
+
+.products-menu-nav {
+    display: block;
+    width: 100%;
+}
+
+.products-menu-results {
+    display: block;
+    color: #444444;
+    font-size: 2.2rem;
+}
+
+.products-menu-sort-options {
+    display: block;
+}
+
+/*Products Menu - Select Element*/
+.sort-products-select {
+    width: 20rem;
+    height: 3rem;
+    padding: .5rem;
+    border: solid 1px #000000;
+    margin-left: 1rem;
+}
+
+/*Products Filters*/
+.products-filter {
+    display: none;
+}
+
+/*The Products*/
 .products-list {
     list-style: none;
     padding: 1.5rem;
@@ -66,10 +101,73 @@
     border-bottom: none;
 }
 
+/********************/
 /*FIRST MEDIA QUERY*/
+/******************/
 @media screen and (min-width: 40rem){
     .products-page-wrapper {
         margin: 0 5%;
+    }
+
+    /*Products Menu*/
+    .products-menu-results {
+        display: inline-block;
+        width: 60%;
+    }
+    
+    .products-menu-sort-options {
+        display: inline-block;
+        width: 40%;
+    }
+
+    .products-content-wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    /*Products Filters*/
+    .products-filter {
+        display: inline-block;
+        width: 25%;
+        background-color: #ffffff;
+    }
+
+    .filter-panel {
+        margin: .5rem;
+        background-color: #dddddd;
+        border: solid 1px #000000;
+    }
+
+    .filter-panel-header {
+        border-bottom: solid 1px #000000;
+        text-transform: capitalize;
+    }
+
+    .filter-panel-header h1 {
+        text-align: center;
+        cursor: pointer;
+        font-size: 2.2rem;
+    }
+
+    .filter-panel-content {
+        text-align: justify;
+        max-height: 0;
+        overflow: hidden;
+        transition: all .5s;
+    }
+    
+    .filter-panel-header.active ~ .filter-panel-content {
+        max-height: 100vh; /*A magic number*/
+    }
+    
+    .filter-panel-content-inner {
+        padding: 1.5em;
+    }
+
+    /*The Products*/
+    .products-list {
+        display: inline-block;
+        width: 75%;
     }
     
     .product {

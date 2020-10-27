@@ -82,4 +82,33 @@ const sortProducts = (data, arg) => async dispatch => {
     }
 }
 
-export { listProducts, sortProducts }
+const filterProducts = (data, propName, args) => async dispatch => {
+    try {
+        dispatch({type: PRODUCTS_LOADING});
+        if (args.length === 0){
+            for (let x = 0; x < data.length; x++){
+                data[x].hidden_by_filter = false;
+            }
+            dispatch({type: PRODUCTS_SUCCESS, payload: data});
+            return;
+        }
+
+        for (let x = 0; x < data.length; x++){
+            const prop = data[x][propName].toString();
+            let acceptable = false;
+            for (let y = 0; y < args.length; y++){
+                if (prop === args[y]){
+                    acceptable = true;
+                }
+            }
+            data[x].hidden_by_filter = (acceptable)?false:true;
+        }
+
+        dispatch({type: PRODUCTS_SUCCESS, payload: data});
+    }
+    catch(error){
+        dispatch({type: PRODUCTS_FAIL, payload: error.message});
+    }
+}
+
+export { listProducts, sortProducts, filterProducts }
