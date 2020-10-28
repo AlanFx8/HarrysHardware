@@ -6,31 +6,65 @@ export default class ProductPageFilter extends React.Component {
     //Constructor
     constructor(props){
         super(props);
-        const items = [
+
+        //Because we may be sent a sorted set of products - we need to reset them
+        const products = [...this.props.products];
+        products.sort((a, b) => {
+            let x = a.id;
+            let y = b.id;
+            if (x < y) {return -1;}
+            if (x > y) {return 1;}        
+            return 0;
+        });
+
+        //We need to use a third-party to track whether a panel is open or nor
+        const filterPanelsData = [
             { propName: "brand", isOpen: true },
             { propName: "rating", isOpen: true },
             { propName: "price", isOpen: true }
         ];
-        this.state = {items}
+
+        //An array of all abailiable filters and args
+        const filterArgs = [
+            { name: 'brand', args: [] },
+            { name: 'rating', args: [] },
+            { name: 'price', args: [] }
+        ];
+
+        //Set the state
+        this.state = { products, filterPanelsData, filterArgs }
     }
 
     //Methods
-    togglePanel = index => {
-        const {items} = this.state;
-        items[index].isOpen = !items[index].isOpen;
-        this.setState({items})
+    toggleFilterPanel = index => {
+        const {filterPanelsData} = this.state;
+        filterPanelsData[index].isOpen = !filterPanelsData[index].isOpen;
+        this.setState({filterPanelsData})
+    }
+
+    onFilterChange = (propName, args) => {
+        let { filterArgs } = this.state;
+        for (let x = 0; x < filterArgs.length; x++){
+            if (filterArgs[x].name === propName){
+                filterArgs[x].args = args;
+                break;
+            }
+        }
+        this.setState({filterArgs});
+        this.props.onFilterRequest(this.state.filterArgs);
     }
 
     //Render
     render(){
-        const data = this.state.items.map((item, index) => {
+        const data = this.state.filterPanelsData.map((item, index) => {
             return <PanelBuilder
-            products = { this.props.products }
-            item= { item }
-            index= { index }
-            key= { index }
-            togglePanel={ this.togglePanel }
-            onFilterRequest = {this.props.onFilterRequest} />
+                products = { this.state.products }
+                item= { item }
+                index= { index }
+                key= { index }
+                toggleFilterPanel={ this.toggleFilterPanel }
+                onFilterChange = {this.onFilterChange}
+            />
         });
 
         return(
@@ -50,23 +84,34 @@ class PanelBuilder extends React.Component {
         const panelClass = (item.isOpen)?'filter-panel-header active':'filter-panel-header';
         return (
             <div className="filter-panel">
-                <div className={panelClass} onClick={ () => this.props.togglePanel(index) } >
+                <div className={panelClass} onClick={ () => this.props.toggleFilterPanel(index) } >
                     <h1>{name}</h1>
                 </div>
                 <div className="filter-panel-content">
-                    <BasicCheckboxBuilder
+                    { (propName === 'rating')?
+                    <RatingCheckboxBuilder
                         products={products}
                         propName={item.propName}
-                        onFilterRequest={this.props.onFilterRequest}
+                        onFilterChange={this.props.onFilterChange}
                     />
+                    : (propName === 'price')?
+                    <PricesCheckboxBuilder
+                        products={products}
+                        propName={item.propName}
+                        onFilterChange={this.props.onFilterChange}
+                    />
+                    : <BasicCheckboxBuilder
+                        products={products}
+                        propName={item.propName}
+                        onFilterChange={this.props.onFilterChange}
+                    /> }
                 </div>
             </div>
         );
     }
 }
 
-//Note: Basic refers to brands, cordless, battery-type, etc.
-//Ratings and prices have specialized checkboxes
+///CHECKBOX BUILDERS///
 class BasicCheckboxBuilder extends React.Component {
     onChange = e => {
         const propName = e.target.name;
@@ -75,7 +120,7 @@ class BasicCheckboxBuilder extends React.Component {
         for (let x = 0; x < checkboxes.length; x++){
             args.push(checkboxes[x].value);
         }
-        this.props.onFilterRequest(propName, args);
+        this.props.onFilterChange(propName, args);
     }
 
     render(){
@@ -100,11 +145,182 @@ class BasicCheckboxBuilder extends React.Component {
 
         //Second loop
         const options = sortOptions.map(
-            (option) => {
+            (option, index) => {
                 return <div className="panel-option-wrapper">
-                    {option.name} ({option.quantity})
-                    <input type="checkbox" name={ propName } value={ option.name }
-                    onChange={this.onChange} />
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
+                    <input
+                        type="checkbox"
+                        name={ propName }
+                        value={ option.name }
+                        id={propName+index}
+                        onChange={this.onChange}
+                    />
+                </div>
+            }
+        );
+
+        //Return checkboxes
+        return(
+            <div className="filter-panel-options">
+                {options}
+            </div>
+        );
+    }
+}
+
+class RatingCheckboxBuilder extends React.Component {
+    onChange = e => {
+        const propName = e.target.name;
+        const checkboxes = document.querySelectorAll(`input[name="${e.target.name}"]:checked`);
+        const args = [];
+        for (let x = 0; x < checkboxes.length; x++){
+            args.push(checkboxes[x].value);
+        }
+        this.props.onFilterChange(propName, args);
+    }
+
+    render(){
+        const { products, propName } = this.props;
+        const sortOptions = [
+            { name: '1', quantity: 0 },
+            { name: '1-2', quantity: 0 },
+            { name: '2-3', quantity: 0 },
+            { name: '3-4', quantity: 0 },
+            { name: '4-5', quantity: 0 },
+            { name: '5', quantity: 0 }
+        ];
+
+        //First loop
+        for (let x = 0; x < products.length; x++){
+            const productRating = products[x].rating;
+            if (productRating < 1){
+                const target = sortOptions.filter(op => op.name === '1');
+                target[0].quantity++;
+            }
+            else if (productRating >= 1 && productRating < 2){
+                const target = sortOptions.filter(op => op.name === '1-2');
+                target[0].quantity++;
+            }
+            else if (productRating >= 2 && productRating < 3){
+                const target = sortOptions.filter(op => op.name === '2-3');
+                target[0].quantity++;
+            }
+            else if (productRating >= 3 && productRating < 4){
+                const target = sortOptions.filter(op => op.name === '3-4');
+                target[0].quantity++;
+            }
+            else if (productRating >= 4 && productRating < 5){
+                const target = sortOptions.filter(op => op.name === '4-5');
+                target[0].quantity++;
+            }
+            else {
+                const target = sortOptions.filter(op => op.name === '5');
+                target[0].quantity++; 
+            }
+        }
+
+        //Second loop
+        const options = sortOptions.map(
+            (option, index) => {
+                if (option.quantity === 0)
+                    return null;
+                
+                return <div className="panel-option-wrapper">
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
+                    <input
+                        type="checkbox"
+                        name={ propName }
+                        value={ option.name }
+                        id={propName+index}
+                        onChange={this.onChange}
+                    />
+                </div>
+            }
+        );
+
+        //Return checkboxes
+        return(
+            <div className="filter-panel-options">
+                {options}
+            </div>
+        );
+    }
+}
+
+class PricesCheckboxBuilder extends React.Component {
+    onChange = e => {
+        const propName = e.target.name;
+        const checkboxes = document.querySelectorAll(`input[name="${e.target.name}"]:checked`);
+        const args = [];
+        for (let x = 0; x < checkboxes.length; x++){
+            args.push(checkboxes[x].value);
+        }
+        this.props.onFilterChange(propName, args);
+    }
+
+    render(){
+        const { products, propName } = this.props;
+        const sortOptions = [
+            { name: 'Less than $50', quantity: 0 },
+            { name: '$50 - $100', quantity: 0 },
+            { name: '$100 - $250', quantity: 0 },
+            { name: '$250 - $500', quantity: 0 },
+            { name: '$500 - $1000', quantity: 0 },
+            { name: '$1000 plus', quantity: 0 }
+        ];
+
+        //First loop
+        for (let x = 0; x < products.length; x++){
+            const productPrice = (products[x].discount_price)?
+            products[x].discount_price:products[x].price;
+            
+            if (productPrice < 50){ //Less than $50
+                const target = sortOptions.filter(op => op.name === 'Less than $50');
+                target[0].quantity++;
+            }
+            else if (productPrice >= 50 && productPrice < 100){ //$50 - $100
+                const target = sortOptions.filter(op => op.name === '$50 - $100');
+                target[0].quantity++;
+            }
+            else if (productPrice >= 100 && productPrice < 250){ //$100 - $250
+                const target = sortOptions.filter(op => op.name === '$100 - $250');
+                target[0].quantity++;
+            }
+            else if (productPrice >= 250 && productPrice < 500){ //$250 - $500
+                const target = sortOptions.filter(op => op.name === '$250 - $500');
+                target[0].quantity++;
+            }
+            else if (productPrice >= 500 && productPrice < 1000){ //$500 - $1000
+                const target = sortOptions.filter(op => op.name === '$500 - $1000');
+                target[0].quantity++;
+            }
+            else { //$1000 plus
+                const target = sortOptions.filter(op => op.name === '$1000 plus');
+                target[0].quantity++; 
+            }
+        }
+
+        //Second loop
+        const options = sortOptions.map(
+            (option, index) => {
+                if (option.quantity === 0)
+                    return null;
+                
+                return <div className="panel-option-wrapper">
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
+                    <input
+                        type="checkbox"
+                        name={ propName }
+                        value={ option.name }
+                        id={propName+index}
+                        onChange={this.onChange}
+                    />
                 </div>
             }
         );

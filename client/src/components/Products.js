@@ -20,8 +20,8 @@ class Products extends React.Component {
         this.props.sortProducts(this.props.productsReducer.products, sortType);
     }
 
-    onFilterRequest = (propName, args) => {
-        this.props.filterProducts(this.props.productsReducer.products, propName, args);
+    onFilterRequest = filterSets => {
+        this.props.filterProducts(this.props.productsReducer.products, filterSets);
     }
 
     //Render
@@ -67,6 +67,7 @@ Products.propTypes = {
     listProducts: PropTypes.func.isRequired,
     sortProducts: PropTypes.func.isRequired,
     filterProducts: PropTypes.func.isRequired,
+    filterProductsX: PropTypes.func.isRequired,
     productsReducer: PropTypes.object.isRequired
 }
 

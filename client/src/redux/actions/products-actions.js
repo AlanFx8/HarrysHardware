@@ -12,13 +12,13 @@ const listProducts = () => async dispatch => {
     }
 }
 
-const sortProducts = (data, arg) => async dispatch => {
+const sortProducts = (products, arg) => async dispatch => {
     try {
         dispatch({type: PRODUCTS_LOADING});
         
         switch(arg){
             case 'R':
-                data.sort((a, b) => {
+                products.sort((a, b) => {
                     let x = a.id;
                     let y = b.id;
                     if (x < y) {return -1;}
@@ -27,7 +27,7 @@ const sortProducts = (data, arg) => async dispatch => {
                 });
                 break;
             case 'T':
-                    data.sort((a, b) => {
+                    products.sort((a, b) => {
                         let x = a.rating;
                         let y = b.rating;
                         if (x < y) {return 1;}
@@ -36,7 +36,7 @@ const sortProducts = (data, arg) => async dispatch => {
                     });
                     break;
             case 'Low-High':
-                data.sort((a, b) => {
+                products.sort((a, b) => {
                     let x = (a.discount_price)?a.discount_price : a.price;
                     let y = (b.discount_price)?b.discount_price : b.price;
                     if (x < y) {return -1;}
@@ -45,7 +45,7 @@ const sortProducts = (data, arg) => async dispatch => {
                 });
                 break;
             case 'High-Low':
-                data.sort((a, b) => {
+                products.sort((a, b) => {
                     let x = (a.discount_price)?a.discount_price : a.price;
                     let y = (b.discount_price)?b.discount_price : b.price;
                     if (x < y) {return 1;}
@@ -54,7 +54,7 @@ const sortProducts = (data, arg) => async dispatch => {
                 });
                 break;
             case 'A-Z':
-                data.sort((a, b) => {
+                products.sort((a, b) => {
                     let x = a.name.toLocaleLowerCase();
                     let y = b.name.toLocaleLowerCase();
                     if (x < y) {return -1;}
@@ -63,7 +63,7 @@ const sortProducts = (data, arg) => async dispatch => {
                 });
                 break;
             case 'Z-A':
-                    data.sort((a, b) => {
+                    products.sort((a, b) => {
                         let x = a.name.toLocaleLowerCase();
                         let y = b.name.toLocaleLowerCase();
                         if (x < y) {return 1;}
@@ -75,40 +75,138 @@ const sortProducts = (data, arg) => async dispatch => {
                 break;
         }
         
-        dispatch({type: PRODUCTS_SUCCESS, payload: data});
+        dispatch({type: PRODUCTS_SUCCESS, payload: products});
     }
     catch(error){
         dispatch({type: PRODUCTS_FAIL, payload: error.message});
     }
 }
 
-const filterProducts = (data, propName, args) => async dispatch => {
+const filterProducts = (products, filterSets) => async dispatch => {
     try {
         dispatch({type: PRODUCTS_LOADING});
-        if (args.length === 0){
-            for (let x = 0; x < data.length; x++){
-                data[x].hidden_by_filter = false;
-            }
-            dispatch({type: PRODUCTS_SUCCESS, payload: data});
-            return;
+        
+        //First, reset all products
+        for (let x = 0; x < products.length; x++){
+            products[x].hidden_by_filter = false;
         }
 
-        for (let x = 0; x < data.length; x++){
-            const prop = data[x][propName].toString();
-            let acceptable = false;
-            for (let y = 0; y < args.length; y++){
-                if (prop === args[y]){
-                    acceptable = true;
+        for (let x = 0; x < filterSets.length; x++){
+            const filterSet = filterSets[x];
+            //If a filter has no args, ignore it
+            if (filterSet.args.length === 0)
+                continue;
+            
+            for (let y = 0; y < products.length; y++){
+                const product = products[y];
+                if (product.hidden_by_filter) //If it's already hidden by another filter, skip it
+                    continue;
+                
+                if (filterSet.name === 'rating'){
+                    product.hidden_by_filter = _hideProductByRating(filterSet.args, product[filterSet.name]);
+                }
+                else if (filterSet.name === 'price'){
+                    const _prop = (product.discount_price)?product.discount_price:product.price;
+                    product.hidden_by_filter = _hideProductByPrice(filterSet.args, _prop);
+                }
+                else {
+                    product.hidden_by_filter = _hideProduct(filterSet.args, product[filterSet.name]);
                 }
             }
-            data[x].hidden_by_filter = (acceptable)?false:true;
         }
 
-        dispatch({type: PRODUCTS_SUCCESS, payload: data});
+        dispatch({type: PRODUCTS_SUCCESS, payload: products});
     }
     catch(error){
         dispatch({type: PRODUCTS_FAIL, payload: error.message});
     }
 }
+
+//A private method to help decide if a product should be filtered
+const _hideProduct = (args, productProp) => {
+    for (let x = 0; x < args.length; x++){
+        if (productProp.toString() === args[x]){
+            return false;
+        }
+    }
+    return true;
+}
+
+const _hideProductByRating = (args, productProp) => {
+    for (let x = 0; x < args.length; x++){
+        const val = args[x];
+
+        if (val === '1'){
+            if (productProp < 1){
+                return false;
+            }
+        }
+        else if (val === '1-2'){
+            if (productProp >= 1 && productProp < 2){
+                return false;
+            }
+        }
+        else if (val === '2-3'){
+            if (productProp >= 2 && productProp < 3){
+                return false;
+            }
+        }
+        else if (val === '3-4'){
+            if (productProp >= 3 && productProp < 4){
+                return false;
+            }
+        }
+        else if (val === '4-5'){
+            if (productProp >= 4 && productProp < 5){
+                return false;
+            }
+        }
+        else {
+            if (productProp === 5){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+const _hideProductByPrice = (args, productProp) => {
+    for (let x = 0; x < args.length; x++){
+        const val = args[x];
+
+        if (val === 'Less than $50'){
+            if (productProp < 50){
+                return false;
+            }
+        }
+        else if (val === '$50 - $100'){
+            if (productProp >= 50 && productProp < 100){
+                return false;
+            }
+        }
+        else if (val === '$100 - $250'){
+            if (productProp >= 100 && productProp < 250){
+                return false;
+            }
+        }
+        else if (val === '$250 - $500'){
+            if (productProp >= 250 && productProp < 500){
+                return false;
+            }
+        }
+        else if (val === '$500 - $1000'){
+            if (productProp >= 500 && productProp < 1000){
+                return false;
+            }
+        }
+        else { //$1000 plus
+            if (productProp >= 1000 ){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+///DERP
 
 export { listProducts, sortProducts, filterProducts }
