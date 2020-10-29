@@ -77,7 +77,7 @@ module.exports = [
         rating: 4.5,
         hidden_by_filter: false,
         sub_type: "pushmowers",
-        powered_by: "battery"
+        powered_by: "Battery"
     },
     {
         id: 202,
@@ -90,7 +90,7 @@ module.exports = [
         rating: 3,
         hidden_by_filter: false,
         sub_type: "pushmowers",
-        powered_by: "gas"
+        powered_by: "Gas"
     },
     {
         id: 203,
@@ -103,7 +103,7 @@ module.exports = [
         rating: 4.8,
         hidden_by_filter: false,
         sub_type: "pushmowers",
-        powered_by: "gas"
+        powered_by: "Gas"
     },
     {
         id: 204,
@@ -116,6 +116,6 @@ module.exports = [
         rating: 4.8,
         hidden_by_filter: false,
         sub_type: "ridingmowers",
-        powered_by: "gas"
+        powered_by: "Gas"
     }
 ]

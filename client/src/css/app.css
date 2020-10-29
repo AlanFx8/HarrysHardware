@@ -21,3 +21,12 @@
 #main-footer {
     grid-area: footer;
 }
+
+/********************/
+/*FIRST MEDIA QUERY*/
+/******************/
+@media screen and (min-width: 40rem){
+    .main-content-wrapper {
+        margin: 0 5%;
+    }
+}

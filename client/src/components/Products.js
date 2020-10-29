@@ -45,7 +45,7 @@ class Products extends React.Component {
 class ProductsContent extends React.Component {
     render(){
         return(
-            <div className="products-page-wrapper">
+            <div className="main-content-wrapper">
                 <ProductPageMenu
                     itemCount={this.props.products.length}
                     onSortRequest={this.props.onSortRequest}

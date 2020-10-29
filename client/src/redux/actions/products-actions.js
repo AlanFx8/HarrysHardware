@@ -110,7 +110,14 @@ const filterProducts = (products, filterSets) => async dispatch => {
                     product.hidden_by_filter = _hideProductByPrice(filterSet.args, _prop);
                 }
                 else {
-                    product.hidden_by_filter = _hideProduct(filterSet.args, product[filterSet.name]);
+                    //Some basic prop-types may not be global - ensure a product has property first
+                    const _propType = product[filterSet.name];
+                    if (_propType){
+                        product.hidden_by_filter = _hideProduct(filterSet.args, product[filterSet.name]);
+                    }
+                    else {
+                        product.hidden_by_filter = true;
+                    }
                 }
             }
         }

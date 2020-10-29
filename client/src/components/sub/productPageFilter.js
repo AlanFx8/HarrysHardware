@@ -1,14 +1,13 @@
 import React from 'react';
 
 //The ProductsFilter class
-//It is used by the Products and ProductPageFilter page to list the filter options side-bar
 export default class ProductPageFilter extends React.Component {
     //Constructor
     constructor(props){
         super(props);
 
         //Because we may be sent a sorted set of products - we need to reset them
-        const products = [...this.props.products];
+        const products = [...this.props.products]; //Use spread operator to hard-copy array
         products.sort((a, b) => {
             let x = a.id;
             let y = b.id;
@@ -24,18 +23,39 @@ export default class ProductPageFilter extends React.Component {
             { propName: "price", isOpen: true }
         ];
 
-        //An array of all abailiable filters and args
+        //An array of all avaliable filters and args
+        //This is passed directly to the parent class (Product, ProductType, etc.)
         const filterArgs = [
             { name: 'brand', args: [] },
             { name: 'rating', args: [] },
             { name: 'price', args: [] }
         ];
 
-        //Set the state
+        //Set the initial state
         this.state = { products, filterPanelsData, filterArgs }
+
+        //Finally, add any extra / non-strandard properties
+        for (let x = 0; x < products.length; x++){
+            this.addExtraProp(products[x], 'sub_type');
+            this.addExtraProp(products[x], 'battery_type');
+            this.addExtraProp(products[x], 'powered_by');
+        }
     }
 
     //Methods
+    addExtraProp = (product, propName) => {
+        const { filterPanelsData, filterArgs } = this.state;
+        const target = product[propName];
+        if (target){
+            const duplicateFound = filterPanelsData.filter(op => op.propName === propName);
+            if (duplicateFound.length === 0){
+                filterPanelsData.push({ propName: propName, isOpen: true });
+                filterArgs.push({ name: propName, args: [] });
+                this.setState({filterPanelsData, filterArgs});
+            }
+        }
+    }
+
     toggleFilterPanel = index => {
         const {filterPanelsData} = this.state;
         filterPanelsData[index].isOpen = !filterPanelsData[index].isOpen;
@@ -75,7 +95,7 @@ export default class ProductPageFilter extends React.Component {
     }
 }
 
-///SUB-COMPONENTS///
+///PANEL-BUILDER///
 class PanelBuilder extends React.Component {
     render(){
         const {products, item, index} = this.props;
@@ -130,6 +150,11 @@ class BasicCheckboxBuilder extends React.Component {
         //First loop - build the sort options for the checkbox
         for (let x = 0; x < products.length; x++){
             const target = products[x][propName]; //Get the brand name / price / rating, etc.
+
+            //Ensure it is a existing prop
+            if (!target)
+                continue;
+
             const duplicateFound = sortOptions.filter(op => op.name === target);
             if (duplicateFound.length > 0){
                 const duplicate = sortOptions.find(op => op.name === target);
@@ -272,8 +297,9 @@ class PricesCheckboxBuilder extends React.Component {
             { name: '$500 - $1000', quantity: 0 },
             { name: '$1000 plus', quantity: 0 }
         ];
+        const sortOptionsFixed = [];
 
-        //First loop
+        //First loop - Add quamity for each matching product
         for (let x = 0; x < products.length; x++){
             const productPrice = (products[x].discount_price)?
             products[x].discount_price:products[x].price;
@@ -304,7 +330,14 @@ class PricesCheckboxBuilder extends React.Component {
             }
         }
 
-        //Second loop
+        //Second loop - for prices we only want to add prices that have at least one match
+        for (let x = 0; x < sortOptions.length; x++){
+            if (sortOptions[x].quantity > 0){
+                sortOptionsFixed.push(sortOptions[x]);
+            }
+        }
+
+        //Third loop - use sortOptionsFixed to build the renderers
         const options = sortOptions.map(
             (option, index) => {
                 if (option.quantity === 0)

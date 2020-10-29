@@ -105,10 +105,6 @@
 /*FIRST MEDIA QUERY*/
 /******************/
 @media screen and (min-width: 40rem){
-    .products-page-wrapper {
-        margin: 0 5%;
-    }
-
     /*Products Menu*/
     .products-menu-results {
         display: inline-block;
@@ -162,6 +158,19 @@
     
     .filter-panel-content-inner {
         padding: 1.5em;
+    }
+
+    /*The arrow */
+    .filter-panel-header h1::after {
+        content: "\25BC";
+        display: block;
+        float: right;
+        margin-right: 1em;
+        transition: all .75s;
+    }
+
+    .filter-panel-header.active h1::after {
+        transform: rotateX(180deg);
     }
 
     /*The Products*/
