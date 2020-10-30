@@ -1,4 +1,38 @@
-#main-header {
-    background-color: #4b78ca;
+/*Intro-links section*/
+.intro-links-section {
+    background-color: #dddddd;
     padding: .5rem;
+    font-size: 1.4rem;
+    display: none;
+}
+
+.intro-links-section-inner {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.deliever-message {
+    flex: 1 0 auto;
+}
+
+.inrto-links a {
+    padding: 0 1rem;
+}
+
+.inrto-links a:hover {
+    text-decoration: underline;
+}
+
+/*Page-Header*/
+.page-header {
+    display: none;
+}
+
+/*Media Query*/
+@media screen and (min-width: 40rem) {
+    .intro-links-section {
+        display: block;
+    }
 }
