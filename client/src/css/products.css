@@ -125,22 +125,21 @@
     .products-filter {
         display: inline-block;
         width: 25%;
-        background-color: #ffffff;
     }
 
     .filter-panel {
         margin: .5rem;
         background-color: #dddddd;
-        border: solid 1px #000000;
+        border-top: solid 1px #666666;
     }
 
     .filter-panel-header {
-        border-bottom: solid 1px #000000;
+        padding: .5rem;
         text-transform: capitalize;
     }
 
     .filter-panel-header h1 {
-        text-align: center;
+        text-align: left;
         cursor: pointer;
         font-size: 2.2rem;
     }
@@ -165,12 +164,20 @@
         content: "\25BC";
         display: block;
         float: right;
-        margin-right: 1em;
+        margin-right: .5rem;
         transition: all .75s;
     }
 
     .filter-panel-header.active h1::after {
         transform: rotateX(180deg);
+    }
+
+    .panel-option {
+        padding: .25rem;
+    }
+
+    .panel-option label {
+        margin-left: .8rem;
     }
 
     /*The Products*/

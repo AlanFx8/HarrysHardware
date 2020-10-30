@@ -171,10 +171,7 @@ class BasicCheckboxBuilder extends React.Component {
         //Second loop
         const options = sortOptions.map(
             (option, index) => {
-                return <div className="panel-option-wrapper">
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
+                return <div className="panel-option">
                     <input
                         type="checkbox"
                         name={ propName }
@@ -182,6 +179,9 @@ class BasicCheckboxBuilder extends React.Component {
                         id={propName+index}
                         onChange={this.onChange}
                     />
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
                 </div>
             }
         );
@@ -252,10 +252,7 @@ class RatingCheckboxBuilder extends React.Component {
                 if (option.quantity === 0)
                     return null;
                 
-                return <div className="panel-option-wrapper">
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
+                return <div className="panel-option">
                     <input
                         type="checkbox"
                         name={ propName }
@@ -263,6 +260,9 @@ class RatingCheckboxBuilder extends React.Component {
                         id={propName+index}
                         onChange={this.onChange}
                     />
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
                 </div>
             }
         );
@@ -343,10 +343,7 @@ class PricesCheckboxBuilder extends React.Component {
                 if (option.quantity === 0)
                     return null;
                 
-                return <div className="panel-option-wrapper">
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
+                return <div className="panel-option">
                     <input
                         type="checkbox"
                         name={ propName }
@@ -354,6 +351,9 @@ class PricesCheckboxBuilder extends React.Component {
                         id={propName+index}
                         onChange={this.onChange}
                     />
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
                 </div>
             }
         );
