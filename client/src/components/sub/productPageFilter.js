@@ -100,7 +100,8 @@ class PanelBuilder extends React.Component {
     render(){
         const {products, item, index} = this.props;
         const { propName } = item;
-        const name = propName.charAt(0).toUpperCase() + propName.slice(1);
+        let name = propName.replace("_", " ");
+        name = name.charAt(0).toUpperCase() + name.slice(1);
         const panelClass = (item.isOpen)?'filter-panel-header active':'filter-panel-header';
         return (
             <div className="filter-panel">
@@ -132,7 +133,7 @@ class PanelBuilder extends React.Component {
 }
 
 ///CHECKBOX BUILDERS///
-class BasicCheckboxBuilder extends React.Component {
+class CheckboxBase extends React.Component {
     onChange = e => {
         const propName = e.target.name;
         const checkboxes = document.querySelectorAll(`input[name="${e.target.name}"]:checked`);
@@ -143,6 +144,29 @@ class BasicCheckboxBuilder extends React.Component {
         this.props.onFilterChange(propName, args);
     }
 
+    getOptions = (sortOptions, propName) => {
+        const options = sortOptions.map(
+            (option, index) => {
+                return <div className="panel-option">
+                    <input
+                        type="checkbox"
+                        name={ propName }
+                        value={ option.name }
+                        id={propName+index}
+                        onChange={this.onChange}
+                    />
+                    <label htmlFor={propName+index}>
+                        {option.name} ({option.quantity})
+                    </label>
+                </div>
+            }
+        );
+
+        return options;
+    }
+}
+
+class BasicCheckboxBuilder extends CheckboxBase {
     render(){
         const { products, propName } = this.props;
         const sortOptions = [];
@@ -169,22 +193,7 @@ class BasicCheckboxBuilder extends React.Component {
         }
 
         //Second loop
-        const options = sortOptions.map(
-            (option, index) => {
-                return <div className="panel-option">
-                    <input
-                        type="checkbox"
-                        name={ propName }
-                        value={ option.name }
-                        id={propName+index}
-                        onChange={this.onChange}
-                    />
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
-                </div>
-            }
-        );
+        const options = this.getOptions(sortOptions, propName);
 
         //Return checkboxes
         return(
@@ -195,17 +204,7 @@ class BasicCheckboxBuilder extends React.Component {
     }
 }
 
-class RatingCheckboxBuilder extends React.Component {
-    onChange = e => {
-        const propName = e.target.name;
-        const checkboxes = document.querySelectorAll(`input[name="${e.target.name}"]:checked`);
-        const args = [];
-        for (let x = 0; x < checkboxes.length; x++){
-            args.push(checkboxes[x].value);
-        }
-        this.props.onFilterChange(propName, args);
-    }
-
+class RatingCheckboxBuilder extends CheckboxBase {
     render(){
         const { products, propName } = this.props;
         const sortOptions = [
@@ -216,6 +215,7 @@ class RatingCheckboxBuilder extends React.Component {
             { name: '4-5', quantity: 0 },
             { name: '5', quantity: 0 }
         ];
+        const sortOptionsFixed = [];
 
         //First loop
         for (let x = 0; x < products.length; x++){
@@ -246,26 +246,15 @@ class RatingCheckboxBuilder extends React.Component {
             }
         }
 
-        //Second loop
-        const options = sortOptions.map(
-            (option, index) => {
-                if (option.quantity === 0)
-                    return null;
-                
-                return <div className="panel-option">
-                    <input
-                        type="checkbox"
-                        name={ propName }
-                        value={ option.name }
-                        id={propName+index}
-                        onChange={this.onChange}
-                    />
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
-                </div>
+        //Second loop - for prices we only want to add prices that have at least one match
+        for (let x = 0; x < sortOptions.length; x++){
+            if (sortOptions[x].quantity > 0){
+                sortOptionsFixed.push(sortOptions[x]);
             }
-        );
+        }
+
+        //Third loop - use sortOptionsFixed to build the renderers
+        const options = this.getOptions(sortOptionsFixed, propName);
 
         //Return checkboxes
         return(
@@ -276,17 +265,7 @@ class RatingCheckboxBuilder extends React.Component {
     }
 }
 
-class PricesCheckboxBuilder extends React.Component {
-    onChange = e => {
-        const propName = e.target.name;
-        const checkboxes = document.querySelectorAll(`input[name="${e.target.name}"]:checked`);
-        const args = [];
-        for (let x = 0; x < checkboxes.length; x++){
-            args.push(checkboxes[x].value);
-        }
-        this.props.onFilterChange(propName, args);
-    }
-
+class PricesCheckboxBuilder extends CheckboxBase {
     render(){
         const { products, propName } = this.props;
         const sortOptions = [
@@ -299,7 +278,7 @@ class PricesCheckboxBuilder extends React.Component {
         ];
         const sortOptionsFixed = [];
 
-        //First loop - Add quamity for each matching product
+        //First loop - Add quantity for each matching product
         for (let x = 0; x < products.length; x++){
             const productPrice = (products[x].discount_price)?
             products[x].discount_price:products[x].price;
@@ -338,25 +317,7 @@ class PricesCheckboxBuilder extends React.Component {
         }
 
         //Third loop - use sortOptionsFixed to build the renderers
-        const options = sortOptions.map(
-            (option, index) => {
-                if (option.quantity === 0)
-                    return null;
-                
-                return <div className="panel-option">
-                    <input
-                        type="checkbox"
-                        name={ propName }
-                        value={ option.name }
-                        id={propName+index}
-                        onChange={this.onChange}
-                    />
-                    <label htmlFor={propName+index}>
-                        {option.name} ({option.quantity})
-                    </label>
-                </div>
-            }
-        );
+        const options = this.getOptions(sortOptionsFixed, propName);
 
         //Return checkboxes
         return(

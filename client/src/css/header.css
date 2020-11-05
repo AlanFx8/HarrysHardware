@@ -27,12 +27,72 @@
 
 /*Page-Header*/
 .page-header {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: solid 2px #960000;
+    padding: 1rem 0;
+}
+
+/*Page-Header > Logo-Header*/
+.logo-header {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-header img {
+    margin: auto;
+    text-align: center;
+}
+
+/*Page-Header > Search-Header*/
+.search-header {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-header #search-form {
+    width: 90%;
+    border: solid 1px #555555;;
+}
+
+#search-form input {
+    width: 90%;
+    line-height: 3rem;
+    padding: 1rem;
+}
+
+#search-form button {
+    color: #960000;
+    font-size: 2rem;
+    background-color: transparent;
+    width: 10%;
+}
+
+#search-form button:hover {
+    cursor: pointer;
+}
+
+/*Page-Header > Cart-Header*/
+.page-header .cart-header {
     display: none;
+    width: 20%;
 }
 
 /*Media Query*/
 @media screen and (min-width: 40rem) {
     .intro-links-section {
         display: block;
+    }
+
+    .logo-header {
+        width: 20%;
+    }
+
+    .search-header {
+        width: 50%;
     }
 }

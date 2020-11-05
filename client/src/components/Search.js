@@ -1,30 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { listProducts, sortProducts, filterProducts } from '../redux/actions/products-actions';
+import { searchProducts, sortProducts, filterProducts } from '../redux/actions/search-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
 
-//This page will list every product
-class Products extends React.Component {
+class Search extends React.Component {
     //Mount
     componentDidMount(){
-        this.props.listProducts();
+        this.props.searchProducts(this.props.match.params.query);
     }
 
     //Methods
     onSortRequest = e => {
         const sortType = e.target.options[e.target.selectedIndex].value;
-        this.props.sortProducts(this.props.productsReducer.products, sortType);
+        this.props.sortProducts(this.props.searchReducer.products, sortType);
     }
 
     onFilterRequest = filterSets => {
-        this.props.filterProducts(this.props.productsReducer.products, filterSets);
+        this.props.filterProducts(this.props.searchReducer.products, filterSets);
     }
 
     //Render
     render(){
-        const {loading, products, errors } = this.props.productsReducer;
+        const {loading, products, errors } = this.props.searchReducer;
 
         return (
             <>
@@ -45,15 +44,15 @@ class Products extends React.Component {
 }
 
 //REDUX
-Products.propTypes = {
-    listProducts: PropTypes.func.isRequired,
+Search.propTypes = {
+    searchProducts: PropTypes.func.isRequired,
     sortProducts: PropTypes.func.isRequired,
     filterProducts: PropTypes.func.isRequired,
-    productsReducer: PropTypes.object.isRequired
+    searchReducer: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-    productsReducer: state.productsReducer
+    searchReducer: state.searchReducer
 });
 
-export default connect(mapStateToProps, { listProducts, sortProducts, filterProducts })(Products);
+export default connect(mapStateToProps, { searchProducts, sortProducts, filterProducts })(Search);

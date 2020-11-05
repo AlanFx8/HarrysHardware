@@ -18,6 +18,10 @@
     background-color: #dddddd;
 }
 
+.main-content-wrapper {
+    margin: 0 5%;
+}
+
 #main-footer {
     grid-area: footer;
 }
@@ -25,8 +29,10 @@
 /********************/
 /*FIRST MEDIA QUERY*/
 /******************/
-@media screen and (min-width: 40rem){
+@media screen and (min-width: 50rem){
     .main-content-wrapper {
-        margin: 0 5%;
+        max-width: 160rem;
+        padding: 0 5%;
+        margin: auto;
     }
 }
