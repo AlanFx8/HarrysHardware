@@ -7,9 +7,9 @@ export default class ProductPageMenu extends React.Component {
     render(){
         return(
             <div className="products-menu" >
-                <div className="products-menu-nav"><Link to='/'>Home</Link> {'>'} Products</div>
+                <HeaderNavBuilder navData={ this.props.navData } />
                 <div className="products-menu-content">
-                    <h1 className="products-menu-results">All Products ({this.props.itemCount} items found)</h1>
+                    <MenuResultsBuilder itemCount={this.props.itemCount} navData={this.props.navData} />
                     <div className="products-menu-sort-options">Sort by 
                         <select className="sort-products-select" onChange={this.props.onSortRequest}>
                             <option value="R">Recommended</option>
@@ -23,5 +23,59 @@ export default class ProductPageMenu extends React.Component {
                 </div>
             </div>
         );
+    }
+}
+
+///SUB-CLASSES///
+class HeaderNavBuilder extends React.Component {
+    render(){
+        const { navData } = this.props;
+
+        return (
+            <div className="products-menu-nav">
+                {navData.query && <SearchHeader query={navData.query} />}
+                {navData.type && <TypeHeader type={navData.type} />}
+                {(!navData.query && !navData.type) && <BasicHeader /> }
+            </div>
+        );
+    }
+}
+
+class MenuResultsBuilder extends React.Component {
+    getCatagory = navData => {
+        return (navData.query)?navData.query:(navData.type)?navData.type:'All Products';
+    }
+
+    render(){
+        return(
+            <h1 className="products-menu-results">
+                {this.getCatagory(this.props.navData)} ({this.props.itemCount} items found)
+            </h1>
+        );
+    }
+}
+
+//HELPERS///
+class SearchHeader extends React.Component {
+    render(){
+        return (<>
+            <Link to='/'>Home</Link> {'>'} {this.props.query}
+        </>);
+    }
+}
+
+class TypeHeader extends React.Component {
+    render(){
+        return (<>
+            <Link to='/'>Home</Link> {'>'} <Link to='/products'>Products</Link> {'>'} {this.props.type}
+        </>);
+    }
+}
+
+class BasicHeader extends React.Component {
+    render(){
+        return (<>
+            <Link to='/'>Home</Link> {'>'} Products
+        </>);
     }
 }

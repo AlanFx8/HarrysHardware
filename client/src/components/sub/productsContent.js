@@ -8,6 +8,7 @@ export default class ProductsContent extends React.Component {
         return(
             <div className="main-content-wrapper">
                 <ProductPageMenu
+                    navData = { this.props.navData }
                     itemCount={this.props.products.length}
                     onSortRequest={this.props.onSortRequest}
                 />

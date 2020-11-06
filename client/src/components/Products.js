@@ -7,6 +7,17 @@ import '../css/products.css';
 
 //This page will list every product
 class Products extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            navData: {
+                query: null,
+                type: null
+            }
+        }
+    }
+
     //Mount
     componentDidMount(){
         this.props.listProducts();
@@ -35,6 +46,7 @@ class Products extends React.Component {
                     products={ products }
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
+                    navData = {this.state.navData}
                 /> }
                 { error && <div className="main-content-wrapper">
                     <p>Sorry there was an error: { error }</p>

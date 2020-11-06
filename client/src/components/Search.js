@@ -1,11 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { searchProducts, sortSearchProducts, filterSearchProducts } from '../redux/actions/search-actions';
+import { searchProducts, sortSearchProducts, filterSearchProducts }
+from '../redux/actions/search-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
 
 class Search extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            navData: {
+                query: `Search for "${this.props.match.params.query}"`,
+                type: null
+            }
+        }
+    }
     //Mount
     componentDidMount(){
         this.props.searchProducts(this.props.match.params.query);
@@ -34,6 +45,7 @@ class Search extends React.Component {
                     products={ products }
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
+                    navData = {this.state.navData}
                 /> }
                 { error && <div className="main-content-wrapper">
                     <p>Sorry there was an error: { error }</p>
@@ -55,4 +67,6 @@ const mapStateToProps = state => ({
     searchReducer: state.searchReducer
 });
 
-export default connect(mapStateToProps, { searchProducts, sortSearchProducts, filterSearchProducts })(Search);
+export default connect(mapStateToProps,
+    { searchProducts, sortSearchProducts, filterSearchProducts }
+)(Search);
