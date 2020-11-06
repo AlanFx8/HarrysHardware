@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { searchProducts, sortProducts, filterProducts } from '../redux/actions/search-actions';
+import { searchProducts, sortSearchProducts, filterSearchProducts } from '../redux/actions/search-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
 
@@ -14,16 +14,16 @@ class Search extends React.Component {
     //Methods
     onSortRequest = e => {
         const sortType = e.target.options[e.target.selectedIndex].value;
-        this.props.sortProducts(this.props.searchReducer.products, sortType);
+        this.props.sortSearchProducts(this.props.searchReducer.products, sortType);
     }
 
     onFilterRequest = filterSets => {
-        this.props.filterProducts(this.props.searchReducer.products, filterSets);
+        this.props.filterSearchProducts(this.props.searchReducer.products, filterSets);
     }
 
     //Render
     render(){
-        const {loading, products, errors } = this.props.searchReducer;
+        const {loading, products, error } = this.props.searchReducer;
 
         return (
             <>
@@ -35,8 +35,8 @@ class Search extends React.Component {
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
                 /> }
-                { errors && <div className="main-content-wrapper">
-                    <p>Sorry there was an error: { errors }</p>
+                { error && <div className="main-content-wrapper">
+                    <p>Sorry there was an error: { error }</p>
                 </div> }
             </>
         );
@@ -46,8 +46,8 @@ class Search extends React.Component {
 //REDUX
 Search.propTypes = {
     searchProducts: PropTypes.func.isRequired,
-    sortProducts: PropTypes.func.isRequired,
-    filterProducts: PropTypes.func.isRequired,
+    sortSearchProducts: PropTypes.func.isRequired,
+    filterSearchProducts: PropTypes.func.isRequired,
     searchReducer: PropTypes.object.isRequired
 }
 
@@ -55,4 +55,4 @@ const mapStateToProps = state => ({
     searchReducer: state.searchReducer
 });
 
-export default connect(mapStateToProps, { searchProducts, sortProducts, filterProducts })(Search);
+export default connect(mapStateToProps, { searchProducts, sortSearchProducts, filterSearchProducts })(Search);

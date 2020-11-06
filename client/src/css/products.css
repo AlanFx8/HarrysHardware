@@ -48,7 +48,7 @@
 
 .product-inner { /*Note: we need a fixed height so the products match-up vertically*/
     display: block;
-    height: 42rem;
+    height: 35rem;
 }
 
 /*Product-sections*/
@@ -191,6 +191,10 @@
         padding: .5rem;
         width: 33%;
         overflow: auto;
+    }
+
+    .product-inner {
+        height: 42rem;
     }
 
     .product-image-inner {

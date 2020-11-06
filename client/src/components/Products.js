@@ -24,7 +24,7 @@ class Products extends React.Component {
 
     //Render
     render(){
-        const {loading, products, errors } = this.props.productsReducer;
+        const {loading, products, error } = this.props.productsReducer;
 
         return (
             <>
@@ -36,8 +36,8 @@ class Products extends React.Component {
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
                 /> }
-                { errors && <div className="main-content-wrapper">
-                    <p>Sorry there was an error: { errors }</p>
+                { error && <div className="main-content-wrapper">
+                    <p>Sorry there was an error: { error }</p>
                 </div> }
             </>
         );

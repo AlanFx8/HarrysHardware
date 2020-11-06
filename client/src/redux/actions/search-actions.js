@@ -27,14 +27,19 @@ const searchProducts = query => async dispatch => {
             }
         }
 
-        dispatch({type: SEARCH_SUCCESS, payload: filteredData});
+        if (filteredData.length === 0 ){
+            dispatch({type: SEARCH_FAIL, payload: `Search for "${query}" returned no results.`});
+        }
+        else {
+            dispatch({type: SEARCH_SUCCESS, payload: filteredData});
+        }
     }
     catch(error){
         dispatch({type: SEARCH_FAIL, payload: error.message});
     }
 }
 
-const sortProducts = (products, arg) => async dispatch => {
+const sortSearchProducts = (products, arg) => async dispatch => {
     try {
         dispatch({type: SEARCH_LOADING});
         products = _sortProducts(products, arg);
@@ -45,7 +50,7 @@ const sortProducts = (products, arg) => async dispatch => {
     }
 }
 
-const filterProducts = (products, filterSets) => async dispatch => {
+const filterSearchProducts = (products, filterSets) => async dispatch => {
     try {
         dispatch({type: SEARCH_LOADING});
         products = _filterProducts(products, filterSets);
@@ -56,4 +61,4 @@ const filterProducts = (products, filterSets) => async dispatch => {
     }
 }
 
-export { searchProducts, sortProducts, filterProducts }
+export { searchProducts, sortSearchProducts, filterSearchProducts }
