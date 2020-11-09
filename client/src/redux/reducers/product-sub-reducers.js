@@ -2,7 +2,7 @@ import {
     PRODUCT_TYPES_LOADING,
     PRODUCT_TYPES_SUCCESS,
     PRODUCT_TYPES_FAIL
-} from '../types/productTypes-types';
+} from '../types/product-sub-types';
 
 function productTypesReducer(state = {products: []}, action){
     switch (action.type){

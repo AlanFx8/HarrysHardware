@@ -5,7 +5,7 @@ import {
     listProductTypes,
     sortProductTypes,
     filterProductTypes
-} from '../redux/actions/productTypes-actions';
+} from '../redux/actions/product-sub-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
 

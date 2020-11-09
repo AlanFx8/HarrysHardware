@@ -1,0 +1,79 @@
+#product-info {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.product-info-image {
+    flex: 1 1 40rem;
+    padding: 1rem;
+}
+
+.product-info-details {
+    flex: 2 1 30rem;
+    padding: 1rem;
+}
+
+.product-info-actions {
+    flex: 1 1 20rem; 
+    padding: 1rem;
+}
+
+/*PRODUCT-INFO-DETAILS*/
+.product-info-details .name {
+    font-weight: bold;
+    font-size: 2.2rem;
+    color: #222222;
+}
+
+/*These two are overrides for basic prices*/
+.product-info-details .product-price-current {
+    font-size: 3rem;
+}
+
+.product-info-details .product-price-old {
+    font-size: 1.6rem;
+}
+
+/*PRODUCTS-INFO-ACTIONS*/
+.product-info-actions .qty-handler {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1.6rem;
+}
+
+.product-info-actions .qty-handler input {
+    width: 6rem;
+    font-weight: bold;
+    padding: 1rem;
+    border: solid 1px #000000;
+}
+
+.product-info-actions #decrease-button, .product-info-actions #increase-button  {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    border: solid 1px #000000;
+    cursor: pointer;
+}
+
+.product-info-actions #cart-button {
+    display: block;
+    margin: auto;
+    width: 80%;
+    line-height: 5rem;
+    padding: 0 .5rem;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.8rem;
+    background-color: #a80000;
+
+    transition: all .5s;
+}
+
+.product-info-actions #cart-button:hover {
+    background-color: #6d0c0c;
+    cursor: pointer;
+}

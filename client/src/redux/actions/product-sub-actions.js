@@ -1,4 +1,8 @@
-import {PRODUCT_TYPES_LOADING, PRODUCT_TYPES_SUCCESS, PRODUCT_TYPES_FAIL } from '../types/productTypes-types';
+import {
+    PRODUCT_TYPES_LOADING,
+    PRODUCT_TYPES_SUCCESS,
+    PRODUCT_TYPES_FAIL
+} from '../types/product-sub-types';
 import { _sortProducts, _filterProducts } from './_sortAndFilter';
 import axios from 'axios';
 
