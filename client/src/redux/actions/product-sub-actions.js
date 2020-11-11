@@ -9,19 +9,13 @@ import axios from 'axios';
 const listProductTypes = _type => async dispatch => {
     try {
         dispatch({type: PRODUCT_TYPES_LOADING});
-        const { data } = await axios.get('/api/products/');
-        const filteredData = [];
-        for (let x = 0; x < data.length; x++){
-            if (data[x].product_type === _type){
-                filteredData.push(data[x]);
-            }
-        }
+        const { data } = await axios.get(`/api/products/${_type}`);
 
-        if (filteredData.length === 0){
+        if (data.length === 0){
             dispatch({type: PRODUCT_TYPES_FAIL, payload: `Search for "${_type}" returned no results.`});
         }
         else {
-            dispatch({type: PRODUCT_TYPES_SUCCESS, payload: filteredData});
+            dispatch({type: PRODUCT_TYPES_SUCCESS, payload: data});
         }
     }
     catch(error){

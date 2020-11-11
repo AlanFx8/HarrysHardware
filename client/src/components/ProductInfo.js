@@ -36,6 +36,10 @@ class ProductInfo extends React.Component {
         }
     }
 
+    onAddToCart = () => {
+        this.props.history.push("/cart/" + this.props.match.params.id + "?qty=" + this.state.qty);
+    }
+
     render(){
         const {loading, product, error } = this.props.productInfoReducer;
 
@@ -53,6 +57,7 @@ class ProductInfo extends React.Component {
                         onQtyChange = { this.onQtyChange }
                         onQtyDecrease = { this.onQtyDecrease }
                         onQtyIncrease = { this.onQtyIncrease }
+                        onAddToCart = { this.onAddToCart }
                     /> }
                 { error && <div className="main-content-wrapper">
                     <p>Sorry there was an error: { error }</p>
@@ -106,7 +111,13 @@ class ProductInfoContent extends React.Component {
                                 {'+'}
                             </button>
                         </div>
-                        <button type="button" id="cart-button">Add To Cart</button>
+                        <button
+                            type="button"
+                            onClick={ this.props.onAddToCart }
+                            id="cart-button"
+                        >
+                            Add To Cart
+                        </button>
                     </div>
                 </div>
             </div>

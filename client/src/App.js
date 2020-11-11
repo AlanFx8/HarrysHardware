@@ -7,6 +7,8 @@ import ProductsType from './components/ProductsType';
 import ProductInfo from './components/ProductInfo';
 import Footer from './components/Footer';
 import Search from './components/Search';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 import ScrollButton from './components/ScrollButton';
 import Error from './components/Error';
 import './css/reset.css';
@@ -23,6 +25,8 @@ function App() {
         <Route path="/products/:type" exact component={ ProductsType } />
         <Route path="/products/:type/:id" exact component={ ProductInfo } />
         <Route path="/search/:query" exact component={ Search } />
+        <Route path="/cart/:id?" component={ Cart } />
+        <Route path="/checkout" exact component={ Checkout } />
         <Route component={ Error } />
         </Switch>
       </div>
