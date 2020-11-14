@@ -13,14 +13,12 @@ class Cart extends React.Component {
 
     render(){
         const { cartItems } = this.props.cartReducer;
-        const data = cartItems.map((item, index) => {
+        const products = cartItems.map((item, index) => {
             return <div key={index}>
-                <p>ID: { item.id }</p>
-                <p>Qty: { item.qty }</p>
+                <p>NAME: {item.name}</p>
             </div>
-        })
-
-        return <div className="main-content-wrapper">{ data } </div>
+        });
+        return <div className="main-content-wrapper"> {products} </div>
     }
 }
 
@@ -32,7 +30,7 @@ Cart.propTypes = {
 }
 
 const mapStateToProps = state => ({
-    cartReducer: state.cartReducer
+    cartReducer : state.cartReducer
 });
 
 export default connect(mapStateToProps, { addToCart, removeFromCart })(Cart);
