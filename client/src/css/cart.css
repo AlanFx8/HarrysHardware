@@ -1,0 +1,88 @@
+/*CART HEADER*/
+.cart-header {
+    background-color: blueviolet;
+}
+
+/*CART CONTENT*/
+.cart-body {
+    background-color: rgb(6, 65, 141);
+}
+
+.purchase-headings {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.purchase {
+    display: flex;
+    justify-content: space-evenly;
+    border-top: solid 1px #666666;
+}
+
+.purchase > section {
+    flex: 1;
+}
+
+.purchase-product {
+    background-color: orange;
+}
+
+.purchase-product > * {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+}
+
+.purchase-product .info {
+    padding: .5rem;
+}
+
+.purchase-product .info span {
+    display: block;
+}
+
+.purchase-product .name {
+    font-weight: bold;
+}
+
+.purchase-quantity {
+    background-color: green;
+}
+
+.qty-handler {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    margin: auto;
+}
+
+.qty-handler input {
+    width: 6rem;
+    font-weight: bold;
+    padding: 1rem;
+    border: solid 1px #000000;
+}
+
+#decrease-button, #increase-button  {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    border: solid 1px #000000;
+    cursor: pointer;
+}
+
+.purchase-prices {
+    padding: .5rem;
+    background-color: gray;
+}
+
+.purchase-prices span {
+    display: block;
+    font-weight: bold;
+}
+
+/*CART FOOTER*/
+.cart-footer {
+    background-color: yellow;
+}

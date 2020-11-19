@@ -1,12 +1,9 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../types/cart-types';
 import axios from 'axios';
-//import cookie from 'js-cookie';
 
 const addToCart = (id, qty) => async dispatch => {
 	try {
-        //const cartItems = JSON.parse(cookie.get("cartItems")) || [];
         const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-        console.log("CART ITEMS:", cartItems);
         const { data } = await axios.get(`/api/products/type/${id}`);
         var isNewItem = true;
 
@@ -22,14 +19,15 @@ const addToCart = (id, qty) => async dispatch => {
             const newItem = {
                 id: data.id,
                 name: data.name,
+                product_type: data.product_type,
                 img: data.img,
+                discount_price: data.discount_price,
                 price: data.price,
                 qty
             }
-            cartItems.push(newItem);
+            cartItems.unshift(newItem);
         }
 
-        //cookie.set("cartItems", cartItems);
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
         dispatch({type: CART_ADD_ITEM, payload: { cartItems }});
 	}
@@ -40,10 +38,8 @@ const addToCart = (id, qty) => async dispatch => {
 
 const removeFromCart = id => async dispatch => {
     try {
-        //const oriCartItems = JSON.parse(cookie.get("cartItems")) || [];
         const oriCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
         const cartItems = oriCartItems.filter(x => x.id !== id);
-        //cookie.set("cartItems", cartItems);
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
         dispatch({type: CART_REMOVE_ITEM, payload: { cartItems }});
     }
