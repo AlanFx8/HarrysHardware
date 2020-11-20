@@ -1,33 +1,74 @@
 /*CART HEADER*/
 .cart-header {
-    background-color: blueviolet;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-header-title {
+    padding: 1rem;
+}
+
+.cart-icon, .cart-header-title > h2 {
+    display: inline-block;
+}
+
+.cart-icon {
+    color: #850000;
+    font-size: 3rem;
+    margin-right: 1.6rem;
+}
+
+/*We only hide the buttons, on the header, not footer*/
+.cart-header > .cart-btn-wrapper {
+    display: none;
+}
+
+.back-btn, .checkout-btn {
+    cursor: pointer;
+    display: block;
+    width: 20rem;
+    line-height: 5rem;
+    padding: 0 .5rem;
+    font-weight: bold;
+    font-size: 1.8rem;
+    transition: all .5s;
+}
+
+.back-btn {
+    color: #666666;
+    border: solid 1px #666666;
+    background-color: #ffffff;
+}
+
+.back-btn:hover {
+    background-color: #bbbbbb;
+}
+
+.checkout-btn {
+    color: #ffffff;
+    background-color: #a80000;
+}
+
+.checkout-btn:hover {
+    background-color: #6d0c0c;
 }
 
 /*CART CONTENT*/
-.cart-body {
-    background-color: rgb(6, 65, 141);
-}
-
 .purchase-headings {
-    font-weight: bold;
-    display: flex;
-    justify-content: space-evenly;
+    display: none;
 }
 
 .purchase {
-    display: flex;
-    justify-content: space-evenly;
+    display: block;
+    width: 100%;
     border-top: solid 1px #666666;
 }
 
 .purchase > section {
-    flex: 1;
+    padding: .75rem;
 }
 
-.purchase-product {
-    background-color: orange;
-}
-
+/*Purchase product*/
 .purchase-product > * {
     display: inline-block;
     vertical-align: top;
@@ -46,10 +87,7 @@
     font-weight: bold;
 }
 
-.purchase-quantity {
-    background-color: green;
-}
-
+/*Purchase Quantity*/
 .qty-handler {
     display: flex;
     justify-content: space-evenly;
@@ -72,11 +110,34 @@
     cursor: pointer;
 }
 
-.purchase-prices {
-    padding: .5rem;
-    background-color: gray;
+.remove-handler span {
+    display: block;
+    text-align: center;
+    font-weight: bold;
 }
 
+.remove-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+}
+
+#removeBTN {
+    background-color: transparent;
+    color: #303030;
+    font-size: 1.8rem;
+    font-style: italic;
+    text-decoration: underline;
+}
+
+#removeBTN:hover {
+    cursor: pointer;
+    font-weight: bold;
+    color: #6e6e6e;
+}
+
+/*Purchase Prices*/
 .purchase-prices span {
     display: block;
     font-weight: bold;
@@ -84,5 +145,47 @@
 
 /*CART FOOTER*/
 .cart-footer {
-    background-color: yellow;
+    border-top: solid 1px #666666;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/********************/
+/*FIRST-MEDIA QUERY*/
+/******************/
+@media screen and (min-width: 40rem) {
+    /*Show the purchase headings*/
+    .purchase-headings {
+        font-weight: bold;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    /*Purchases are now 3-column*/
+    .purchase {
+        display: flex;
+        justify-content: space-evenly;
+    }
+    
+    .purchase > section {
+        flex: 1;
+    }
+
+    /*Make the back and checkout-btns inline*/
+    .checkout-btn, .back-btn {
+        display: inline-block;
+        margin-right: 1rem;
+    }
+}
+
+/********************/
+/*SECOND-MEDIA QUERY*/
+/******************/
+@media screen and (min-width: 60rem) {
+    /*Show the cart-header buttons*/
+    .cart-header > .cart-btn-wrapper {
+        display: block;
+        padding: 1rem;
+    }
 }

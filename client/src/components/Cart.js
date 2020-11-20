@@ -1,7 +1,8 @@
 import React from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart } from '../redux/actions/cart-actions';
+import { addToCart, removeFromCart, emptyCart } from '../redux/actions/cart-actions';
 import Util from '../classes/Util';
 import '../css/cart.css';
 
@@ -20,21 +21,45 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
-        this.props.addToCart(this.state.id, this.state.qty);
+        this.props.addToCart(this.state.id, this.state.qty)
+        .then(() => {
+            const { cartItems } = this.props.cartReducer;
+            this.setState({totalOrder: this.getTotalOrder(cartItems)});
+        });
     }
 
     //Methods
+    getTotalOrder = cartItems => {
+        const costs = [];
+        for (let x = 0; x < cartItems.length; x++){
+            costs.push({
+                price: (cartItems[x].discount_price)
+                ?cartItems[x].discount_price:cartItems[x].price,
+                qty: cartItems[x].qty
+            });
+        }
+        return this.state.util.GetFullOrder(costs);
+    }
+
     onQtyChange = (id, e) => {
         if (isNaN(e.target.value))
             return;
-        this.props.addToCart(id, e.target.value);
+        this.props.addToCart(id, e.target.value)
+        .then(() => {
+            const { cartItems } = this.props.cartReducer;
+            this.setState({totalOrder: this.getTotalOrder(cartItems)});
+        });
     }
 
     onQtyDecrease = id => {
         const product = this.props.cartReducer.cartItems.find(x => x.id === id);
         if (!product) return;
         if (product.qty > this.state.qty_min){
-            this.props.addToCart(id, product.qty-1);
+            this.props.addToCart(id, product.qty-1)
+            .then(() => {
+                const { cartItems } = this.props.cartReducer;
+                this.setState({totalOrder: this.getTotalOrder(cartItems)});
+            });
         }
     }
 
@@ -42,7 +67,11 @@ class Cart extends React.Component {
         const product = this.props.cartReducer.cartItems.find(x => x.id === id);
         if (!product) return;
         if (product.qty < this.state.qty_max){
-            this.props.addToCart(id, product.qty+1);
+            this.props.addToCart(id, product.qty+1)
+            .then(() => {
+                const { cartItems } = this.props.cartReducer;
+                this.setState({totalOrder: this.getTotalOrder(cartItems)});
+            });
         }
     }
 
@@ -51,6 +80,15 @@ class Cart extends React.Component {
         if (!product) return;
         this.props.removeFromCart(product.id);
     }
+
+    onBackRequest = () => {
+        this.props.history.push("/products/");
+    }
+
+    onCheckoutRequest = () => {
+        this.props.emptyCart();
+        this.props.history.push("/checkout/");
+    } 
 
     //Render
     render(){
@@ -70,10 +108,20 @@ class Cart extends React.Component {
             />
         });
         
+        //Build the cart page
         return (<div className="main-content-wrapper">
+            { products.length === 0 && <p>Sorry, the cart is empty</p> }
+            { products.length > 0 &&
             <div id="cart">
                 <div className="cart-header">
-                    The Header
+                    <div className="cart-header-title">
+                        <FontAwesomeIcon icon={['fas', 'shopping-cart']} className="cart-icon" />
+                        <h2>Shopping Cart</h2>
+                    </div>
+                    <div className="cart-btn-wrapper">
+                        <BackBTNBuilder onBackRequest={ this.onBackRequest } />
+                        <CheckoutBTNBuilder onCheckoutRequest={ this.onCheckoutRequest } />
+                    </div>
                 </div>
 
                 <div className="cart-body">
@@ -88,9 +136,13 @@ class Cart extends React.Component {
                 </div>
 
                 <div className="cart-footer">
-                    The Footer
+                    <h2 className="total-order">Total Order: ${this.state.totalOrder}</h2>
+                    <div className="cart-btn-wrapper">
+                        <BackBTNBuilder onBackRequest={ this.onBackRequest } />
+                        <CheckoutBTNBuilder onCheckoutRequest={ this.onCheckoutRequest } />
+                    </div>
                 </div>
-            </div>
+            </div> }
         </div>);
     }
 }
@@ -136,12 +188,17 @@ class CartItemBuilder extends React.Component {
                         </button>
                     </div>
                     <div className="remove-handler">
-                        <button
-                            type="button"
-                            onClick={() => this.props.onRemoveItem(id)}
-                        >
-                            Remove from cart
-                        </button>
+                        <span>-Or-</span>
+                        <div className="remove-btn-wrapper">
+                            <button
+                                type="button"
+                                name="removeBTN"
+                                id="removeBTN"
+                                onClick={() => this.props.onRemoveItem(id)}
+                            >
+                                Remove from cart
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -158,10 +215,39 @@ class CartItemBuilder extends React.Component {
     }
 }
 
+class CheckoutBTNBuilder extends React.Component {
+    render(){
+        return (
+            <button
+                className="checkout-btn"
+                type="button"
+                onClick={ this.props.onCheckoutRequest }
+            >
+                Checkout
+            </button>
+        );
+    }
+}
+
+class BackBTNBuilder extends React.Component {
+    render(){
+        return (
+            <button
+                className="back-btn"
+                type="button"
+                onClick={ this.props.onBackRequest }
+            >
+                Continue Shopping
+            </button>
+        );
+    }
+}
+
 ///REDUX///
 Cart.propTypes = {
     addToCart: PropTypes.func.isRequired,
     removeFromCart: PropTypes.func.isRequired,
+    emptyCart: PropTypes.func.isRequired,
     cartReducer: PropTypes.object.isRequired
 }
 
@@ -169,4 +255,4 @@ const mapStateToProps = state => ({
     cartReducer : state.cartReducer
 });
 
-export default connect(mapStateToProps, { addToCart, removeFromCart })(Cart);
+export default connect(mapStateToProps, { addToCart, removeFromCart, emptyCart })(Cart);

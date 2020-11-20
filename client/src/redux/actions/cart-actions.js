@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../types/cart-types';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_EMPTY } from '../types/cart-types';
 import axios from 'axios';
 
 const addToCart = (id, qty) => async dispatch => {
@@ -48,4 +48,9 @@ const removeFromCart = id => async dispatch => {
     }
 }
 
-export { addToCart, removeFromCart }
+const emptyCart = () => async dispatch => {
+    localStorage.removeItem("cartItems");
+    dispatch({type: CART_EMPTY, payload: {}});
+}
+
+export { addToCart, removeFromCart, emptyCart }

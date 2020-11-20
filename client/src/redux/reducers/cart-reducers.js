@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../types/cart-types';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_EMPTY } from '../types/cart-types';
 
 function cartReducer(state = {cartItems: []}, action){
     switch(action.type){
@@ -6,6 +6,8 @@ function cartReducer(state = {cartItems: []}, action){
             return {cartItems: action.payload.cartItems}
         case CART_REMOVE_ITEM:
             return {cartItems: action.payload.cartItems}
+        case CART_EMPTY:
+            return {cartItems: []}
         default:
             return state;
     }
