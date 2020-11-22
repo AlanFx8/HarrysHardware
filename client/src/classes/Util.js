@@ -22,12 +22,22 @@ export default class Util {
         return total;
     }
 
+    //Get Total Items
+    GetTotalItems = obj => {
+        var totalItems = 0;
+        for (let x = 0 ; x < obj.length; x++){
+            totalItems += parseInt(obj[x].qty);
+        }
+        return totalItems;
+    }
+
     //Get Full Order
     GetFullOrder = obj => {
         var totalCosts = 0; //The cost in pennies for each order x quantity
 
         for (let x = 0; x < obj.length; x++){
-            let values = obj[x].price.toString().split(".");
+            let price = obj[x].discount_price || obj[x].price;
+            let values = price.toString().split(".");
             let pounds = parseInt(values[0]) * 100;
             let pennies = (values.length > 1)?parseInt(values[1]):0;
     

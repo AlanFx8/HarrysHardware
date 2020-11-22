@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PurchasePreviewModel from './PurchasePreviewModel';
 import { connect } from 'react-redux';
 import { getProductInfo } from '../redux/actions/product-info-actions';
+import { addToCart } from '../redux/actions/cart-actions';
 import '../css/product-info.css';
 
 ///THE PRODUCT INFO CLASS///
@@ -12,7 +14,8 @@ class ProductInfo extends React.Component {
         this.state = {
             qty: 1,
             qty_min: 1,
-            qty_max: 20
+            qty_max: 20,
+            openModel: false
         }
     }
 
@@ -21,25 +24,45 @@ class ProductInfo extends React.Component {
     }
 
     onQtyChange = e => {
-        this.setState({qty: e.target.value});
+        let val = e.target.value;
+        if (val < this.state.qty_min){
+            val = this.state.qty_min;
+        }
+        if (val > this.state.qty_max){
+            val = this.state.qty_max;
+        }
+        this.setState({qty: val});
     }
 
     onQtyDecrease = () => {
         if (this.state.qty > this.state.qty_min){
-            this.setState({qty: this.state.qty-1});
+            this.setState({qty: parseInt(this.state.qty)-1});
         }
     }
 
     onQtyIncrease = () => {
         if (this.state.qty < this.state.qty_max){
-            this.setState({qty: this.state.qty+1});
+            this.setState({qty: parseInt(this.state.qty)+1});
         }
     }
 
     onAddToCart = () => {
-        this.props.history.push("/cart/" + this.props.match.params.id + "?qty=" + this.state.qty);
+        this.props.addToCart(this.props.match.params.id, this.state.qty)
+        .then(() => {
+            this.setState({openModel: true});
+        });
     }
 
+    //Checkout methods
+    onGoBack = () => {
+        this.setState({openModel: false});
+    }
+
+    onGoToCart = () => {
+        this.props.history.push("/cart");
+    }
+
+    //Render
     render(){
         const {loading, product, error } = this.props.productInfoReducer;
 
@@ -58,6 +81,13 @@ class ProductInfo extends React.Component {
                         onQtyDecrease = { this.onQtyDecrease }
                         onQtyIncrease = { this.onQtyIncrease }
                         onAddToCart = { this.onAddToCart }
+                    /> }
+                { this.state.openModel &&
+                    <PurchasePreviewModel
+                        product={ product }
+                        qty={ this.state.qty }
+                        onGoBack={ this.onGoBack }
+                        onGoToCart={ this.onGoToCart }
                     /> }
                 { error && <div className="main-content-wrapper">
                     <p>Sorry there was an error: { error }</p>
@@ -163,6 +193,7 @@ class ProductPrice extends React.Component {
 //REDUX
 ProductInfo.propTypes = {
     getProductInfo: PropTypes.func.isRequired,
+    addToCart: PropTypes.func.isRequired,
     productInfoReducer: PropTypes.object.isRequired
 }
 
@@ -170,4 +201,4 @@ const mapStateToProps = state => ({
     productInfoReducer: state.productInfoReducer
 });
 
-export default connect(mapStateToProps, { getProductInfo } )(ProductInfo);
+export default connect(mapStateToProps, { getProductInfo, addToCart } )(ProductInfo);

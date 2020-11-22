@@ -21,33 +21,26 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
-        this.props.addToCart(this.state.id, this.state.qty)
-        .then(() => {
-            const { cartItems } = this.props.cartReducer;
-            this.setState({totalOrder: this.getTotalOrder(cartItems)});
-        });
+        const { cartItems } = this.props.cartReducer;
+        this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
     }
 
     //Methods
-    getTotalOrder = cartItems => {
-        const costs = [];
-        for (let x = 0; x < cartItems.length; x++){
-            costs.push({
-                price: (cartItems[x].discount_price)
-                ?cartItems[x].discount_price:cartItems[x].price,
-                qty: cartItems[x].qty
-            });
-        }
-        return this.state.util.GetFullOrder(costs);
-    }
-
     onQtyChange = (id, e) => {
         if (isNaN(e.target.value))
             return;
-        this.props.addToCart(id, e.target.value)
+        let val = e.target.value;
+        if (val < this.state.qty_min){
+            val = this.state.qty_min;
+        }
+        if (val > this.state.qty_max){
+            val = this.state.qty_max;
+        }
+
+        this.props.addToCart(id, val)
         .then(() => {
             const { cartItems } = this.props.cartReducer;
-            this.setState({totalOrder: this.getTotalOrder(cartItems)});
+            this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
         });
     }
 
@@ -55,10 +48,10 @@ class Cart extends React.Component {
         const product = this.props.cartReducer.cartItems.find(x => x.id === id);
         if (!product) return;
         if (product.qty > this.state.qty_min){
-            this.props.addToCart(id, product.qty-1)
+            this.props.addToCart(id, parseInt(product.qty)-1)
             .then(() => {
                 const { cartItems } = this.props.cartReducer;
-                this.setState({totalOrder: this.getTotalOrder(cartItems)});
+                this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
             });
         }
     }
@@ -67,10 +60,10 @@ class Cart extends React.Component {
         const product = this.props.cartReducer.cartItems.find(x => x.id === id);
         if (!product) return;
         if (product.qty < this.state.qty_max){
-            this.props.addToCart(id, product.qty+1)
+            this.props.addToCart(id, parseInt(product.qty)+1)
             .then(() => {
                 const { cartItems } = this.props.cartReducer;
-                this.setState({totalOrder: this.getTotalOrder(cartItems)});
+                this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
             });
         }
     }
