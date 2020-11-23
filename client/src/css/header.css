@@ -29,6 +29,7 @@
 .page-header {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     border-bottom: solid 2px #960000;
     padding: 1rem 0;
 }
@@ -37,9 +38,6 @@
 .logo-header {
     width: 18%;
     padding: .5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .logo-header img {
@@ -50,9 +48,6 @@
 /*Page-Header > Search-Header*/
 .search-header {
     width: 60%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .search-header #search-form {
@@ -78,9 +73,12 @@
 }
 
 /*Page-Header > Cart-Header*/
-.page-header .cart-header {
-    display: none;
+.header-cart {
     width: 20%;
+}
+
+.header-cart .cart-header-info {
+    display: none;
 }
 
 /*Media Query*/
@@ -95,5 +93,9 @@
 
     .search-header {
         width: 50%;
+    }
+
+    .header-cart .cart-header-info {
+        display: inline-block;
     }
 }

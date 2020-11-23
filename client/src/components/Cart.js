@@ -2,8 +2,9 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart, emptyCart } from '../redux/actions/cart-actions';
+import { loadCartItems, addToCart, removeFromCart, emptyCart } from '../redux/actions/cart-actions';
 import Util from '../classes/Util';
+import { onCartChangeEvent } from '../classes/CustomEvents';
 import '../css/cart.css';
 
 ///THE CART PAGE///
@@ -21,8 +22,11 @@ class Cart extends React.Component {
     }
 
     componentDidMount(){
-        const { cartItems } = this.props.cartReducer;
-        this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
+        this.props.loadCartItems()
+        .then(() => {
+            const { cartItems } = this.props.cartReducer;
+            this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
+        });
     }
 
     //Methods
@@ -40,6 +44,7 @@ class Cart extends React.Component {
         this.props.addToCart(id, val)
         .then(() => {
             const { cartItems } = this.props.cartReducer;
+            window.dispatchEvent(onCartChangeEvent);
             this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
         });
     }
@@ -51,6 +56,7 @@ class Cart extends React.Component {
             this.props.addToCart(id, parseInt(product.qty)-1)
             .then(() => {
                 const { cartItems } = this.props.cartReducer;
+                window.dispatchEvent(onCartChangeEvent);
                 this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
             });
         }
@@ -63,6 +69,7 @@ class Cart extends React.Component {
             this.props.addToCart(id, parseInt(product.qty)+1)
             .then(() => {
                 const { cartItems } = this.props.cartReducer;
+                window.dispatchEvent(onCartChangeEvent);
                 this.setState({totalOrder: this.state.util.GetFullOrder(cartItems)});
             });
         }
@@ -71,7 +78,10 @@ class Cart extends React.Component {
     onRemoveItem = id => {
         const product = this.props.cartReducer.cartItems.find(x => x.id === id);
         if (!product) return;
-        this.props.removeFromCart(product.id);
+        this.props.removeFromCart(product.id)
+        .then(() => {
+            window.dispatchEvent(onCartChangeEvent);
+        });
     }
 
     onBackRequest = () => {
@@ -238,6 +248,7 @@ class BackBTNBuilder extends React.Component {
 
 ///REDUX///
 Cart.propTypes = {
+    loadCartItems: PropTypes.func.isRequired,
     addToCart: PropTypes.func.isRequired,
     removeFromCart: PropTypes.func.isRequired,
     emptyCart: PropTypes.func.isRequired,
@@ -248,4 +259,4 @@ const mapStateToProps = state => ({
     cartReducer : state.cartReducer
 });
 
-export default connect(mapStateToProps, { addToCart, removeFromCart, emptyCart })(Cart);
+export default connect(mapStateToProps, { loadCartItems, addToCart, removeFromCart, emptyCart })(Cart);

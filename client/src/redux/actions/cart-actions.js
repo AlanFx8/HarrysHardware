@@ -1,6 +1,16 @@
 import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_EMPTY } from '../types/cart-types';
 import axios from 'axios';
 
+const loadCartItems = () => async dispatch => {
+    try {
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        dispatch({type: CART_ADD_ITEM, payload: { cartItems }});
+    }
+    catch (error) {
+        //If there is an error, we can't really do anything but go to the cart anyway
+    }
+}
+
 const addToCart = (id, qty) => async dispatch => {
 	try {
         const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -53,4 +63,4 @@ const emptyCart = () => async dispatch => {
     dispatch({type: CART_EMPTY, payload: {}});
 }
 
-export { addToCart, removeFromCart, emptyCart }
+export { loadCartItems, addToCart, removeFromCart, emptyCart }

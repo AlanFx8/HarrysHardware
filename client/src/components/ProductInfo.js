@@ -5,6 +5,7 @@ import { ProductRating, ProductPrice } from './sub/productRatingPrice';
 import { connect } from 'react-redux';
 import { getProductInfo } from '../redux/actions/product-info-actions';
 import { addToCart } from '../redux/actions/cart-actions';
+import { onCartChangeEvent } from '../classes/CustomEvents';
 import '../css/product-info.css';
 
 ///THE PRODUCT INFO CLASS///
@@ -50,6 +51,7 @@ class ProductInfo extends React.Component {
     onAddToCart = () => {
         this.props.addToCart(this.props.match.params.id, this.state.qty)
         .then(() => {
+            window.dispatchEvent(onCartChangeEvent);
             this.setState({openModel: true});
         });
     }

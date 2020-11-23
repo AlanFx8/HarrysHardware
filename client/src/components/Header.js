@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter  } from 'react-router-dom';
+import HeaderCart from './HeaderCart';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from '../img/logo.png';
 import '../css/header.css';
@@ -59,10 +60,7 @@ class Header extends React.Component {
                         </form>
                     </div>
 
-                    <div className="cart-header">
-                        <FontAwesomeIcon icon={['fas', 'shopping-cart']} className="cart-icon" />
-                        <p>Shopping <br/> Cart</p>
-                    </div>
+                    <HeaderCart />
                 </section>
             </div>
         </header>
