@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { listProducts, sortProducts, filterProducts } from '../redux/actions/products-actions';
+import { listProducts, sortProducts, filterProducts, resetProducts }
+from '../redux/actions/products-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
 
@@ -33,6 +34,10 @@ class Products extends React.Component {
         this.props.filterProducts(this.props.productsReducer.products, filterSets);
     }
 
+    onResetRequest = () => {
+        this.props.resetProducts(this.props.productsReducer.products);
+    }
+
     //Render
     render(){
         const {loading, products, error } = this.props.productsReducer;
@@ -46,6 +51,7 @@ class Products extends React.Component {
                     products={ products }
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
+                    onResetRequest = { this.onResetRequest }
                     navData = {this.state.navData}
                 /> }
                 { error && <div className="main-content-wrapper">
@@ -61,6 +67,7 @@ Products.propTypes = {
     listProducts: PropTypes.func.isRequired,
     sortProducts: PropTypes.func.isRequired,
     filterProducts: PropTypes.func.isRequired,
+    resetProducts: PropTypes.func.isRequired,
     productsReducer: PropTypes.object.isRequired
 }
 
@@ -68,4 +75,5 @@ const mapStateToProps = state => ({
     productsReducer: state.productsReducer
 });
 
-export default connect(mapStateToProps, { listProducts, sortProducts, filterProducts })(Products);
+export default connect(mapStateToProps,
+    { listProducts, sortProducts, filterProducts, resetProducts })(Products);

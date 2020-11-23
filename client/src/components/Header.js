@@ -60,7 +60,7 @@ class Header extends React.Component {
                     </div>
 
                     <div className="cart-header">
-                        <FontAwesomeIcon icon={['fas', 'shopping-cart']} />
+                        <FontAwesomeIcon icon={['fas', 'shopping-cart']} className="cart-icon" />
                         <p>Shopping <br/> Cart</p>
                     </div>
                 </section>

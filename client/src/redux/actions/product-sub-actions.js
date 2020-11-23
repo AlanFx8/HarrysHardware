@@ -45,4 +45,19 @@ const filterProductTypes = (products, filterSets) => async dispatch => {
     }
 }
 
-export { listProductTypes, sortProductTypes, filterProductTypes }
+const resetProductTypes = (products) => async dispatch => {
+    try {
+        dispatch({type: PRODUCT_TYPES_LOADING});
+        
+        for (let x = 0; x < products.length; x++){
+            products[x].hidden_by_filter = false;
+        }
+
+        dispatch({type: PRODUCT_TYPES_SUCCESS, payload: products});
+    }
+    catch(error){
+        dispatch({type: PRODUCT_TYPES_FAIL, payload: error.message});
+    }
+}
+
+export { listProductTypes, sortProductTypes, filterProductTypes, resetProductTypes }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { searchProducts, sortSearchProducts, filterSearchProducts }
+import { searchProducts, sortSearchProducts, filterSearchProducts, resetSearchProducts }
 from '../redux/actions/search-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
@@ -32,6 +32,10 @@ class Search extends React.Component {
         this.props.filterSearchProducts(this.props.searchReducer.products, filterSets);
     }
 
+    onResetRequest = () => {
+        this.props.resetSearchProducts(this.props.searchReducer.products);
+    }
+
     //Render
     render(){
         const {loading, products, error } = this.props.searchReducer;
@@ -45,6 +49,7 @@ class Search extends React.Component {
                     products={ products }
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
+                    onResetRequest = { this.onResetRequest }
                     navData = {this.state.navData}
                 /> }
                 { error && <div className="main-content-wrapper">
@@ -60,6 +65,7 @@ Search.propTypes = {
     searchProducts: PropTypes.func.isRequired,
     sortSearchProducts: PropTypes.func.isRequired,
     filterSearchProducts: PropTypes.func.isRequired,
+    resetSearchProducts: PropTypes.func.isRequired,
     searchReducer: PropTypes.object.isRequired
 }
 
@@ -68,5 +74,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps,
-    { searchProducts, sortSearchProducts, filterSearchProducts }
+    { searchProducts, sortSearchProducts, filterSearchProducts, resetSearchProducts }
 )(Search);

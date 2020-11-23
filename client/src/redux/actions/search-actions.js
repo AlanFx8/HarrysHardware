@@ -61,4 +61,19 @@ const filterSearchProducts = (products, filterSets) => async dispatch => {
     }
 }
 
-export { searchProducts, sortSearchProducts, filterSearchProducts }
+const resetSearchProducts = (products) => async dispatch => {
+    try {
+        dispatch({type: SEARCH_LOADING});
+        
+        for (let x = 0; x < products.length; x++){
+            products[x].hidden_by_filter = false;
+        }
+
+        dispatch({type: SEARCH_SUCCESS, payload: products});
+    }
+    catch(error){
+        dispatch({type: SEARCH_FAIL, payload: error.message});
+    }
+}
+
+export { searchProducts, sortSearchProducts, filterSearchProducts, resetSearchProducts }

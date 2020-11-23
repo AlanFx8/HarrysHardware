@@ -212,7 +212,7 @@ class CheckoutBTNBuilder extends React.Component {
     render(){
         return (
             <button
-                className="checkout-btn"
+                className="cart-checkout-btn in-cart-page"
                 type="button"
                 onClick={ this.props.onCheckoutRequest }
             >
@@ -226,7 +226,7 @@ class BackBTNBuilder extends React.Component {
     render(){
         return (
             <button
-                className="back-btn"
+                className="continue-shopping-btn in-cart-page"
                 type="button"
                 onClick={ this.props.onBackRequest }
             >

@@ -58,22 +58,8 @@
     cursor: pointer;
 }
 
-.product-info-actions #cart-button {
-    display: block;
+.cart-checkout-btn.info-page {
     margin: auto;
     width: 80%;
-    line-height: 5rem;
-    padding: 0 .5rem;
-
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 1.8rem;
-    background-color: #a80000;
-
-    transition: all .5s;
-}
-
-.product-info-actions #cart-button:hover {
-    background-color: #6d0c0c;
-    cursor: pointer;
+    max-width: 20rem;
 }

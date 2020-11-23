@@ -34,21 +34,48 @@ export default class ProductPageFilter extends React.Component {
         //Set the initial state
         this.state = { products, filterPanelsData, filterArgs }
 
-        //Finally, add any extra / non-strandard properties
+        //Finally, add non-strandard properties
+        const sub_types_props = [];
         for (let x = 0; x < products.length; x++){
-            this.addExtraProp(products[x], 'sub_type');
-            this.addExtraProp(products[x], 'battery_type');
-            this.addExtraProp(products[x], 'powered_by');
+            for (const prop in products[x]){
+                if (prop !== 'id'
+                && prop !== 'name'
+                && prop !== 'product_type'
+                && prop !== 'brand'
+                && prop !== 'img'
+                && prop !== 'price'
+                && prop !== 'review_count'
+                && prop !== 'rating'
+                && prop !== 'hidden_by_filter'
+                && prop !== 'discount_price'
+                ){
+                    const dup = sub_types_props.find(x => x === prop);
+                    if (!dup){
+                        sub_types_props.push(prop);
+                    }
+                }
+            }
+        }
+
+        for (let x = 0; x < products.length; x++){
+            for (let y = 0; y < sub_types_props.length; y++){
+                this.addExtraProp(products[x], sub_types_props[y]);
+            }
         }
     }
 
     //Methods
+    //AddExtraProp
+    //This method checks for an extra search properly, like battery-type or powered-by
+    //If the current collect of products, has this type, it will create a panel for it
+    //HOWEVER, if will not add the options for that type
     addExtraProp = (product, propName) => {
         const { filterPanelsData, filterArgs } = this.state;
-        const target = product[propName];
+        const target = product[propName]; //Battery type for example
         if (target){
-            const duplicateFound = filterPanelsData.filter(op => op.propName === propName);
-            if (duplicateFound.length === 0){
+            //If a product, jas that sub-type, make sure if isn't already added
+            const duplicateFound = filterPanelsData.find(op => op.propName === propName);
+            if (!duplicateFound){
                 filterPanelsData.push({ propName: propName, isOpen: true });
                 filterArgs.push({ name: propName, args: [] });
                 this.setState({filterPanelsData, filterArgs});
@@ -62,6 +89,9 @@ export default class ProductPageFilter extends React.Component {
         this.setState({filterPanelsData})
     }
 
+    //OnFilterChange
+    //Finds a search type and sets the query arguments for it
+    //Then calls this.props.onFilterRequest to perform a fiilter action
     onFilterChange = (propName, args) => {
         let { filterArgs } = this.state;
         for (let x = 0; x < filterArgs.length; x++){
@@ -72,6 +102,21 @@ export default class ProductPageFilter extends React.Component {
         }
         this.setState({filterArgs});
         this.props.onFilterRequest(this.state.filterArgs);
+    }
+
+    //ResetAllCheckboxes
+    resetAllCheckboxes = () => {
+        const { filterArgs } = this.state;
+        for (let x = 0; x < filterArgs.length; x++){
+            const name = filterArgs[x].name;
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
+            for (let y = 0; y < checkboxes.length; y++){
+                checkboxes[y].checked = false;
+            }
+            filterArgs[x].args = [];
+        }
+        this.setState({filterArgs});
+        this.props.onResetRequest();
     }
 
     //Render
@@ -89,6 +134,13 @@ export default class ProductPageFilter extends React.Component {
 
         return(
             <div className="products-filter">
+                <button
+                    type="button"
+                    className="reset-filters-btn"
+                    onClick={this.resetAllCheckboxes}
+                >
+                    RESET FILTERS
+                </button>
                 {data}
             </div>
         );

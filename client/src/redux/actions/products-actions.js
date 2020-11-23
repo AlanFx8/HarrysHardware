@@ -35,4 +35,19 @@ const filterProducts = (products, filterSets) => async dispatch => {
     }
 }
 
-export { listProducts, sortProducts, filterProducts }
+const resetProducts = (products) => async dispatch => {
+    try {
+        dispatch({type: PRODUCTS_LOADING});
+        
+        for (let x = 0; x < products.length; x++){
+            products[x].hidden_by_filter = false;
+        }
+
+        dispatch({type: PRODUCTS_SUCCESS, payload: products});
+    }
+    catch(error){
+        dispatch({type: PRODUCTS_FAIL, payload: error.message});
+    }
+}
+
+export { listProducts, sortProducts, filterProducts, resetProducts }

@@ -26,6 +26,46 @@
     grid-area: footer;
 }
 
+/*Check-out-btn && continue-shoping-btn*/
+/*These buttons are used in three components so shared here*/
+.continue-shopping-btn, .cart-checkout-btn {
+    cursor: pointer;
+    display: block;
+    width: 20rem;
+    line-height: 5rem;
+    padding: 0 .5rem;
+    font-weight: bold;
+    font-size: 1.8rem;
+    transition: all .5s;
+}
+
+.continue-shopping-btn {
+    color: #666666;
+    border: solid 1px #666666;
+    background-color: #ffffff;
+}
+
+.continue-shopping-btn:hover {
+    background-color: #bbbbbb;
+}
+
+.cart-checkout-btn {
+    color: #ffffff;
+    background-color: #a80000;
+}
+
+.cart-checkout-btn:hover {
+    background-color: #6d0c0c;
+}
+
+/*Cart icon*/
+/*Used by the header, purchase-preview page and cart page*/
+.cart-icon {
+    color: #850000;
+    font-size: 3rem;
+    margin-right: 1.6rem;
+}
+
 /********************/
 /*FIRST MEDIA QUERY*/
 /******************/

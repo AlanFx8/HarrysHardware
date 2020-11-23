@@ -78,36 +78,6 @@
     background-color: #555555;
 }
 
-.back-btn, .checkout-btn {
-    cursor: pointer;
-    display: block;
-    width: 20rem;
-    line-height: 5rem;
-    padding: 0 .5rem;
-    font-weight: bold;
-    font-size: 1.8rem;
-    transition: all .5s;
-}
-
-.back-btn {
-    color: #666666;
-    border: solid 1px #666666;
-    background-color: #ffffff;
-}
-
-.back-btn:hover {
-    background-color: #bbbbbb;
-}
-
-.checkout-btn {
-    color: #ffffff;
-    background-color: #a80000;
-}
-
-.checkout-btn:hover {
-    background-color: #6d0c0c;
-}
-
 /*FIRST MEDIA-QUERY*/
 @media screen and (min-width: 40rem) {
     #purchase-preview-panel {

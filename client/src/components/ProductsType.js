@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import {
     listProductTypes,
     sortProductTypes,
-    filterProductTypes
+    filterProductTypes,
+    resetProductTypes
 } from '../redux/actions/product-sub-actions';
 import ProductsContent from './sub/productsContent';
 import '../css/products.css';
@@ -37,6 +38,10 @@ class ProductsType extends React.Component {
         this.props.filterProductTypes(this.props.productTypesReducer.products, filterSets);
     }
 
+    onResetRequest = () => {
+        this.props.resetProductTypes(this.props.productTypesReducer.products);
+    }
+
     getSubType = type => {
         if (type === 'powerdrills'){
             return 'Power Drills';
@@ -62,6 +67,7 @@ class ProductsType extends React.Component {
                     products={ products }
                     onSortRequest={this.onSortRequest}
                     onFilterRequest={this.onFilterRequest}
+                    onResetRequest = { this.onResetRequest }
                     navData = {this.state.navData}
                 /> }
                 { error && <div className="main-content-wrapper">
@@ -77,6 +83,7 @@ ProductsType.propTypes = {
     listProductTypes: PropTypes.func.isRequired,
     sortProductTypes: PropTypes.func.isRequired,
     filterProductTypes: PropTypes.func.isRequired,
+    resetProductTypes: PropTypes.func.isRequired,
     productTypesReducer: PropTypes.object.isRequired
 }
 
@@ -85,5 +92,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps,
-    { listProductTypes, sortProductTypes, filterProductTypes }
+    { listProductTypes, sortProductTypes, filterProductTypes, resetProductTypes }
 )(ProductsType);

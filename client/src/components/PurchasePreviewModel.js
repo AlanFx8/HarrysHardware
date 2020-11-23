@@ -74,14 +74,14 @@ class PurchasePreviewModel extends React.Component {
                 <div className="purchase-preview-footer">
                     <button
                         type="button"
-                        className="back-btn"
+                        className="continue-shopping-btn"
                         onClick={ this.props.onGoBack }
                     >
                         Continue Shoping
                     </button>
                     <button
                         type="button"
-                        className="checkout-btn"
+                        className="cart-checkout-btn"
                         onClick={ this.props.onGoToCart }
                     >
                         Go To Cart

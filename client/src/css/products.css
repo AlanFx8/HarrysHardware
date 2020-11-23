@@ -127,6 +127,19 @@
         width: 25%;
     }
 
+    .reset-filters-btn {
+        color: #ffffff;
+        background-color: #a80000;
+        line-height: 2rem;
+        padding: 0 .8rem;
+        font-weight: bold;
+        transition: all .5s;
+    }
+
+    .reset-filters-btn:hover {
+        background-color: #6d0c0c;
+    }
+
     .filter-panel {
         margin: .5rem;
         background-color: #dddddd;
