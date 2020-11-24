@@ -1,0 +1,3 @@
+export const BRAND_LOADING = 'BRAND_LOADING';
+export const BRAND_SUCCESS = 'BRAND_SUCCESS';
+export const BRAND_FAIL = 'BRAND_FAIL';

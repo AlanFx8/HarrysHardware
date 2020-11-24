@@ -42,6 +42,7 @@ export default class ProductPageFilter extends React.Component {
                 && prop !== 'name'
                 && prop !== 'product_type'
                 && prop !== 'brand'
+                && prop !== 'brand_name'
                 && prop !== 'img'
                 && prop !== 'price'
                 && prop !== 'review_count'
@@ -62,18 +63,17 @@ export default class ProductPageFilter extends React.Component {
                 this.addExtraProp(products[x], sub_types_props[y]);
             }
         }
+
+        console.log(this.state.filterArgs);
     }
 
     //Methods
     //AddExtraProp
-    //This method checks for an extra search properly, like battery-type or powered-by
-    //If the current collect of products, has this type, it will create a panel for it
-    //HOWEVER, if will not add the options for that type
     addExtraProp = (product, propName) => {
         const { filterPanelsData, filterArgs } = this.state;
         const target = product[propName]; //Battery type for example
         if (target){
-            //If a product, jas that sub-type, make sure if isn't already added
+            //If a product, has that sub-type, make sure if isn't already added
             const duplicateFound = filterPanelsData.find(op => op.propName === propName);
             if (!duplicateFound){
                 filterPanelsData.push({ propName: propName, isOpen: true });
@@ -173,6 +173,12 @@ class PanelBuilder extends React.Component {
                         propName={item.propName}
                         onFilterChange={this.props.onFilterChange}
                     />
+                    : (propName === 'brand')?
+                    <BrandCheckboxBuilder
+                        products={products}
+                        propName={item.propName}
+                        onFilterChange={this.props.onFilterChange}
+                    />
                     : <BasicCheckboxBuilder
                         products={products}
                         propName={item.propName}
@@ -246,6 +252,66 @@ class BasicCheckboxBuilder extends CheckboxBase {
 
         //Second loop
         const options = this.getOptions(sortOptions, propName);
+
+        //Return checkboxes
+        return(
+            <div className="filter-panel-options">
+                {options}
+            </div>
+        );
+    }
+}
+
+class BrandCheckboxBuilder extends CheckboxBase {
+    getOptions = (sortOptions, propName) => {
+        const options = sortOptions.map(
+            (option, index) => {
+                return <div className="panel-option">
+                    <input
+                        type="checkbox"
+                        name={ propName }
+                        value={ option.name }
+                        id={propName+index}
+                        onChange={this.onChange}
+                    />
+                    <label htmlFor={propName+index}>
+                        {option.real_name} ({option.quantity})
+                    </label>
+                </div>
+            }
+        );
+
+        return options;
+    }
+
+    render(){
+        const { products} = this.props;
+        const sortOptions = [];
+
+        //First loop - build the sort options for the checkbox
+        for (let x = 0; x < products.length; x++){
+            const target = products[x].brand; //Get the brand
+
+            //Ensure it is a existing prop
+            if (!target)
+                continue;
+
+            const duplicateFound = sortOptions.filter(op => op.name === target);
+            if (duplicateFound.length > 0){
+                const duplicate = sortOptions.find(op => op.name === target);
+                duplicate.quantity += 1;
+            }
+            else {
+                sortOptions.push({
+                    name: target,
+                    real_name: products[x].brand_name,
+                    quantity: 1
+                });
+            }
+        }
+
+        //Second loop
+        const options = this.getOptions(sortOptions, 'brand');
 
         //Return checkboxes
         return(

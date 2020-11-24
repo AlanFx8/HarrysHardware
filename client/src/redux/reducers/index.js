@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { productsReducer } from './products-reducers';
 import { productTypesReducer } from './product-sub-reducers';
 import { productInfoReducer} from './product-info-reducers';
+import { brandReducer } from './brand-reducers';
 import { searchReducer } from './search-reducers';
 import { cartReducer } from './cart-reducers';
 
@@ -12,6 +13,7 @@ export default combineReducers({
     productsReducer,
     productTypesReducer,
     productInfoReducer,
+    brandReducer,
     searchReducer,
     cartReducer
 });

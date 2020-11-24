@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Products from './components/Products';
 import ProductsType from './components/ProductsType';
 import ProductInfo from './components/ProductInfo';
+import BrandType from './components/BrandType';
 import Footer from './components/Footer';
 import Search from './components/Search';
 import Cart from './components/Cart';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/products/" exact component={ Products } />
         <Route path="/products/:type" exact component={ ProductsType } />
         <Route path="/products/:type/:id" exact component={ ProductInfo } />
+        <Route path="/brand/:type" exact component={ BrandType } />
         <Route path="/search/:query" exact component={ Search } />
         <Route path="/cart/:id?" component={ Cart } />
         <Route path="/checkout" exact component={ Checkout } />

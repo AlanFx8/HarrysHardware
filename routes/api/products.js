@@ -8,6 +8,19 @@ router.get("/", (req, res) => {
     res.send(products);
 });
 
+router.get("/brand/:type", (req, res) => {
+    const type = req.params.type;
+    const filteredProducts = [];
+
+    for (let x = 0; x < products.length; x++){
+        if (products[x].brand.trim().toLocaleLowerCase() === type.trim().toLocaleLowerCase()){
+            filteredProducts.push(products[x]);
+        }
+    }
+
+    res.send(filteredProducts)
+});
+
 router.get("/:type", (req, res) => {
     const type = req.params.type;
     const filteredProducts = [];
