@@ -51,7 +51,19 @@ class ProductsType extends React.Component {
             return 'Lawn Mowers';
         }
 
-        return "NULL";
+        if (type === 'snowblowers'){
+            return 'Snow Blowers';
+        }
+
+        if (type === 'grills'){
+            return 'Grills';
+        }
+
+        if (type === 'chainsaws'){
+            return 'Chainsaws';
+        }
+
+        return "Null";
     }
 
     //Render
