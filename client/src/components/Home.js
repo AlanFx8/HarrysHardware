@@ -22,7 +22,7 @@ class Home extends React.Component {
                 { products &&
                     <div id="home">
                         <div className="intro-text">
-                            Welcome to Harry's Hardware. Harry's Hardware is a portfolio site made by Alan Mark Freeman using the MERN stack and React Redux. You can browse all products or browse projucts by departments or with a search query. You can also sort and filter products, as well as add them to a basket/cart.
+                            Welcome to Harry's Hardware. Harry's Hardware is a portfolio site made by Alan Mark Freeman. You can browse all products or browse projucts by departments or with a search query. You can also sort and filter products, as well as add them to a basket/cart.
                         </div>
 
                         <section className="home-nav-section">
